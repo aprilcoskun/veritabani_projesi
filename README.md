@@ -1,0 +1,2 @@
+# veritabani_projesi
+SA
