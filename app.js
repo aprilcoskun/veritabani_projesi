@@ -35,6 +35,6 @@ server.listen(PORT, () => {
     console.log(`Listening on localhost:${PORT}`);
 });
 
-app.get('/', (req, res) => {
+app.get('/lp', (req, res) => {
   res.render('index',{deger:'sex',Admin:false});
 });
