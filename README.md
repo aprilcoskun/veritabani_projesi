@@ -1,2 +1,0 @@
-# veritabani_projesi
-SA
