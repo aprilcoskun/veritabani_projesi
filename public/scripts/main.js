@@ -20,4 +20,4 @@ function calUnitPrice() {
   else
     document.getElementById('studentPayUnitPrice').value = null;
 
-}//sex
+}
