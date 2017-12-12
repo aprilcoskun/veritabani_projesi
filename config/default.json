@@ -1,0 +1,7 @@
+{
+    "connection":{
+        "server"  : "<<server name or ip>>",
+        "userName": "<<user name>>",
+        "password": "<<password>>"
+    }
+}
