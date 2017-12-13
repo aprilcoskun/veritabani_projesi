@@ -1,7 +1,9 @@
 {
+    "dbIp":"mssql://SA:anaokulu_123@52.164.200.179/anaokulu",
     "connection":{
-        "server"  : "<<server name or ip>>",
-        "userName": "<<user name>>",
-        "password": "<<password>>"
+        "server"  : "52.164.200.179",
+        "userName": "SA",
+        "password": "anaokulu_123",
+        "options": { "database": "anaokulu" }
     }
 }

@@ -101,10 +101,9 @@
               <label class="col-sm-2 control-label" for="studentStaff" >Öğretmen</label>
               <div class="col-sm-10">
                 <select class="form-control" id="studentStaff">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
+                  {{#each Staffs}}
+                  <option>{{this.per_ad}} {{this.per_soyad}}</option>
+                  {{/each}}
                 </select>
               </div>
             </div>
@@ -113,9 +112,9 @@
               <div class="col-sm-10">
                 <select class="form-control" id="studentSchoolBus">
                   <option>Yok</option>
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
+                  {{#each SchoolBuses}}
+                  <option>{{this}}</option>
+                  {{/each}}
                 </select>
               </div>
             </div>
@@ -123,10 +122,9 @@
               <label class="col-sm-2 control-label" for="studentClass">Sınıf</label>
               <div class="col-sm-10">
                 <select class="form-control" id="studentClass">
-                  <option>1</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
+                  {{#each Classes}}
+                  <option>{{this.sinif_ad}}</option>
+                  {{/each}}
                 </select>
               </div>
             </div>
@@ -215,9 +213,15 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" for="studentExtraState">Yakınlık Derecesi</label>
+                <label class="col-sm-2 control-label" for="studentExtraPhysical">Fiziksel Durum</label>
                 <div class="col-sm-10">
-                  <textarea class="form-control" id="studentExtraState" maxlength="50" rows="1"/></textarea>
+                  <textarea class="form-control" id="studentExtraPhysical" maxlength="50" rows="1"/></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="studentExtraAllergic">Alerji Durumu</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" id="studentExtraAllergic" maxlength="25" rows="1"/></textarea>
                 </div>
               </div>
             </div>
