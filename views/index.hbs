@@ -102,7 +102,9 @@
               <div class="col-sm-10">
                 <select class="form-control" id="studentStaff">
                   {{#each Staffs}}
+                  {{#ifEquals this.gorev 'Ögretmen'}}
                   <option value="{{this.per_tc}}">{{this.per_ad}} {{this.per_soyad}}</option>
+                  {{/ifEquals}}
                   {{/each}}
                 </select>
               </div>

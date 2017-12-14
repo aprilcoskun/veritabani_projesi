@@ -1,12 +1,12 @@
 <div class = "container">
 	<div class="wrapper">
-		<form id="signin-form" name="Login_Form" class="form-signin">
+		<form id="signin-form" name="Login_Form" class="form-signin" autocomplete="off">
 		    <h3 class="form-signin-heading">Hogwarts'a Hoşgeldiniz</h3>
 			  <hr>
-			  <input type="text" id="username" class="form-control" placeholder="Kullanıcı Adı" required="" autofocus=""/>
-			  <input type="password" id="password" class="form-control" placeholder="Şifre" required=""/>
-			  <button class="btn btn-lg btn-primary btn-block" name="Submit" type="Submit">Giriş</button>
-        <br>
+			  <input type="text" id="username" class="form-control" placeholder="Kullanıcı Adı" required="" autocomplete="off" autofocus=""/>
+			  <input type="password" id="password" class="form-control" placeholder="Şifre" required="" autocomplete="off"/>
+			  <button class="btn btn-lg btn-primary btn-block" name="Submit" type="Submit">Giriş</button><br/>
+        <div id="err" class="alert alert-danger alert-dismissable fade in"></div>
 		</form>
 	</div>
 </div>

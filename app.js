@@ -5,12 +5,10 @@ const parser = require('body-parser');
 const path = require('path');
 const http = require('http');
 const config = require('./config/default.json');
-const sql = require('mssql');
-var routes = require('./routes');
-
-//SQL BALANTISI
-const pool =  sql.connect(config.dbIp);
-
+const routes = require('./routes');
+const cookieParser = require('cookie-parser');
+//SQL BAGLANTISI
+require('mssql').connect(config.dbIp);
 
 /*GEREKLI DEGER ATAMALARI*/
 const PORT = 3000;
@@ -33,12 +31,28 @@ app.use(express.static(path.join(__dirname, 'public')));
 if (process.env.NODE_ENV !== 'production')
   app.use(require('morgan')('dev'));
 
-/*HTTP BODY'SININ JSON OLARAK BELIRLENMESI*/
+/*HTTP BODY'SININ JSON OLARAK BELIRLENMESI VE CEREZLERIN CEKILMESI*/
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
+app.use(cookieParser())
 
 /*HTTP ISLEMLERININ YAPILDIGI ROUTER*/
 app.use('/', routes);
+
+//Auth Middleware
+app.all('*',(req,res, next) => {
+  let username = req.cookies.username;
+
+  if(req.url === '/auth') {
+    if(username) res.redirect('/');
+    else return next();
+  }
+  else if(username)
+    return next();
+  else return res.redirect('/auth');
+});
+
+
 
 /*SERVER'IN 3000 PORTUNU DINLEMESI*/
 server.listen(PORT, async () => {
