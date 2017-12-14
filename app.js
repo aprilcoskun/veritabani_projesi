@@ -36,9 +36,6 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use(cookieParser())
 
-/*HTTP ISLEMLERININ YAPILDIGI ROUTER*/
-app.use('/', routes);
-
 //Auth Middleware
 app.all('*',(req,res, next) => {
   let username = req.cookies.username;
@@ -46,13 +43,12 @@ app.all('*',(req,res, next) => {
   if(req.url === '/auth') {
     if(username) res.redirect('/');
     else return next();
-  }
-  else if(username)
-    return next();
+  } else if(username) return next();
   else return res.redirect('/auth');
 });
 
-
+/*HTTP ISLEMLERININ YAPILDIGI ROUTER*/
+app.use('/', routes);
 
 /*SERVER'IN 3000 PORTUNU DINLEMESI*/
 server.listen(PORT, async () => {
