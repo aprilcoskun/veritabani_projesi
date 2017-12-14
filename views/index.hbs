@@ -26,7 +26,7 @@
   <div class="tab-content">
     <!--Öğrenciler-->
     <div id="students" class="tab-pane fade">
-      <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModalHorizontal">
+      <button class="btn btn-primary " data-toggle="modal" data-target="#myModalHorizontal">
         Öğrenci Kayıt
       </button>
     </div>
@@ -102,7 +102,7 @@
               <div class="col-sm-10">
                 <select class="form-control" id="studentStaff">
                   {{#each Staffs}}
-                  <option>{{this.per_ad}} {{this.per_soyad}}</option>
+                  <option value="{{this.per_tc}}">{{this.per_ad}} {{this.per_soyad}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -111,9 +111,9 @@
               <label class="col-sm-2 control-label" for="studentSchoolBus">Servis</label>
               <div class="col-sm-10">
                 <select class="form-control" id="studentSchoolBus">
-                  <option>Yok</option>
+                  <option value="none">Yok</option>
                   {{#each SchoolBuses}}
-                  <option>{{this}}</option>
+                  <option value="{{this.plaka}}">{{this.guzergah}}, plaka:{{this.plaka}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -123,7 +123,7 @@
               <div class="col-sm-10">
                 <select class="form-control" id="studentClass">
                   {{#each Classes}}
-                  <option>{{this.sinif_ad}}</option>
+                  <option value="{{this.sinif_ad}}">{{this.sinif_ad}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -139,9 +139,9 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" for="studentParentName">Ebeveyn Tel No</label>
+                <label class="col-sm-2 control-label" for="studentParentPhone">Ebeveyn Tel No</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="studentParentName" placeholder="Öğrencinin Velisinin Telefonu" maxlength="10"/>
+                  <input type="number" class="form-control" id="studentParentPhone" placeholder="Öğrencinin Velisinin Telefonu" maxlength="10"/>
                 </div>
               </div>
             </div>
@@ -213,13 +213,13 @@
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" for="studentExtraPhysical">Fiziksel Durum</label>
+                <label class="col-sm-2 control-label" for="studentExtraPhysical">Öğrenci Fiziksel Durumu</label>
                 <div class="col-sm-10">
                   <textarea class="form-control" id="studentExtraPhysical" maxlength="50" rows="1"/></textarea>
                 </div>
               </div>
               <div class="form-group">
-                <label class="col-sm-2 control-label" for="studentExtraAllergic">Alerji Durumu</label>
+                <label class="col-sm-2 control-label" for="studentExtraAllergic">Öğrenci Alerji Durumu</label>
                 <div class="col-sm-10">
                   <textarea class="form-control" id="studentExtraAllergic" maxlength="25" rows="1"/></textarea>
                 </div>
@@ -231,11 +231,10 @@
           <button type="button" class="btn btn-default" data-dismiss="modal">
             İptal
           </button>
-          <button type="button" class="btn btn-primary">
-            Kaydet
-          </button>
+          <a class="btn btn-primary" href="javascript:addStudent()">Kaydet</a>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script src="/scripts/main.js"></script>

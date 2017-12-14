@@ -6,6 +6,7 @@ const path = require('path');
 const http = require('http');
 const config = require('./config/default.json');
 const sql = require('mssql');
+var routes = require('./routes');
 
 //SQL BALANTISI
 const pool =  sql.connect(config.dbIp);
@@ -36,26 +37,10 @@ if (process.env.NODE_ENV !== 'production')
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 
-
+/*HTTP ISLEMLERININ YAPILDIGI ROUTER*/
+app.use('/', routes);
 
 /*SERVER'IN 3000 PORTUNU DINLEMESI*/
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
     console.log(`Listening on localhost:${PORT}`);
 });
-
-app.get('/', async (req, res) => {
-  try {
-    const classesQuery = await sql.query`select * from sinif for json path`;
-    const staffsQuery = await sql.query`select * from personel for json path`;
-
-    let classes = await JSON.parse(first(classesQuery.recordset[0]));
-    let staffs = await JSON.parse(first(staffsQuery.recordset[0]));
-    res.render('index',{deger:'sex',Admin:false,Classes:classes, Staffs:staffs});
-  } catch (err) {
-    console.error(err);
-  }
-});
-
-function first(obj) {
-    for (let a in obj) return obj[a];
-}
