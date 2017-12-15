@@ -13,7 +13,6 @@ require('mssql').connect(config.dbIp);
 /*GEREKLI DEGER ATAMALARI*/
 const PORT = 3000;
 const app = express();
-const router = express.Router();
 const server = http.createServer(app);
 
 /*HANDLEBARS KURULUMU*/
@@ -34,12 +33,11 @@ if (process.env.NODE_ENV !== 'production')
 /*HTTP BODY'SININ JSON OLARAK BELIRLENMESI VE CEREZLERIN CEKILMESI*/
 app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
-app.use(cookieParser())
+app.use(cookieParser());
 
 //Auth Middleware
 app.all('*',(req,res, next) => {
   let username = req.cookies.username;
-
   if(req.url === '/auth') {
     if(username) res.redirect('/');
     else return next();

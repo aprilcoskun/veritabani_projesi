@@ -11,9 +11,7 @@
           <li><a data-toggle="tab" href="#schoolbus">Servis</a></li>
           <li><a data-toggle="tab" href="#inventory">Envanter</a></li>
           <li><a data-toggle="tab" href="#budget">Bütçe</a></li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
+          <li class="pull-right">
             <a data-toggle="tab" href="#settings">
               <i class="fa fa-cog" aria-hidden="true"></i>
             </a>
@@ -26,12 +24,50 @@
   <div class="tab-content">
     <!--Öğrenciler-->
     <div id="students" class="tab-pane fade">
+      <div class="form-group">
+        <label class="col-sm-1 control-label" for="studentClass">Sınıf</label>
+        <div class="col-sm-9">
+          <select class="form-control" id="classToList">
+            {{#each Classes}}
+            <option value="{{this.sinif_ad}}">{{this.sinif_ad}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <a class="col-sm-2 btn btn-primary" href="javascript:listStudents()">Öğrenci Listele</a>
+      </div>
+      <div id="studentList"></div>
       <button class="btn btn-primary " data-toggle="modal" data-target="#myModalHorizontal">
         Öğrenci Kayıt
       </button>
     </div>
     <!--Personeller-->
     <div id="staff" class="tab-pane fade">
+      <table>
+        <tr>
+          <th>Ad</th>
+          <th>Soyad</th>
+          <th>T.C</th>
+          <th>Doğum Tarihi</th>
+          <th>Telefon No.</th>
+          <th>Maaş</th>
+          <th>Görev</th>
+          <th>Eposta</th>
+          <th>Sigorta No.</th>
+        </tr>
+        {{#each Staffs}}
+        <tr>
+          <td>{{this.per_ad}}</td>
+          <td>{{this.per_soyad}}</td>
+          <td>{{this.per_tc}}</td>
+          <td>{{this.per_dog_tar}}</td>
+          <td>{{this.per_tel}}</td>
+          <td>{{this.per_maas}}</td>
+          <td>{{this.per_gorev}}</td>
+          <td>{{this.per_email}}</td>
+          <td>{{this.sigorta_no}}</td>
+        </tr>
+        {{/each}}
+      </table>
     </div>
     <!--Servis-->
     <div id="schoolbus" class="tab-pane fade">
@@ -44,6 +80,7 @@
     </div>
     <!--Öğrenciler-->
     <div id="settings" class="tab-pane fade">
+      <a class="btn btn-primary" href="javascript:logout()">Çıkış Yap</a>
     </div>
   </div>
 
@@ -84,7 +121,7 @@
               <label class="col-sm-2 control-label">Cinsiyet</label>
               <div class="col-sm-10">
                 <div class="radio-inline">
-                  <label><input type="radio" name="optradio"><i class="fa fa-mars" aria-hidden="true"></i>E</label>
+                  <label><input type="radio" name="optradio" checked><i class="fa fa-mars" aria-hidden="true"></i>E</label>
                 </div>
                 <div class="radio-inline">
                   <label><input type="radio" name="optradio"><i class="fa fa-venus" aria-hidden="true"></i>K</label>
@@ -95,18 +132,6 @@
               <label class="col-sm-2 control-label" for="studentAddress" >Adres</label>
               <div class="col-sm-10">
                 <textarea class="form-control" id="studentAddress" placeholder="Öğrenci Adresi" maxlength="200" rows="4"></textarea>
-              </div>
-            </div>
-            <div class="form-group">
-              <label class="col-sm-2 control-label" for="studentStaff" >Öğretmen</label>
-              <div class="col-sm-10">
-                <select class="form-control" id="studentStaff">
-                  {{#each Staffs}}
-                  {{#ifEquals this.gorev 'Ögretmen'}}
-                  <option value="{{this.per_tc}}">{{this.per_ad}} {{this.per_soyad}}</option>
-                  {{/ifEquals}}
-                  {{/each}}
-                </select>
               </div>
             </div>
             <div class="form-group">
@@ -125,7 +150,7 @@
               <div class="col-sm-10">
                 <select class="form-control" id="studentClass">
                   {{#each Classes}}
-                  <option value="{{this.sinif_ad}}">{{this.sinif_ad}}</option>
+                  <option value="{{this.sinif_ad}}">{{this.sinif_ad}} Yaş Grubu:{{this.sinif_yas_grup}}</option>
                   {{/each}}
                 </select>
               </div>
@@ -138,6 +163,18 @@
                 <label class="col-sm-2 control-label" for="studentParentName">Ebeveyn Adı</label>
                 <div class="col-sm-10">
                   <input type="text" class="form-control" id="studentParentName" placeholder="Öğrencinin Velisinin Adı" maxlength="15"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="studentParentSurname">Ebeveyn Soyadı</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="studentParentSurname" placeholder="Öğrencinin Velisinin Soyadı" maxlength="15"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="studentParentJob">Ebeveyn Meslek</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="studentParentJob" placeholder="Öğrencinin Velisinin Mesleği" maxlength="15"/>
                 </div>
               </div>
               <div class="form-group">

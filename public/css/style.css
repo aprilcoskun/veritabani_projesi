@@ -12,7 +12,13 @@ nav.navbar {
   padding: 0 !important;
   height: 60px !important;
 }
-
+ul.nav.navbar-nav {
+  width: 100%;
+}
+li:nth-last-child(1) {
+  float: right !important;
+  display: inline-block;
+}
 .container {
   background-color: white;
   border: 1px solid rgba(0, 0, 0, .3);
@@ -31,4 +37,24 @@ input::-webkit-inner-spin-button {
 
 textarea {
     resize: none;
+}
+
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+tr.student {
+    cursor:pointer;
 }
