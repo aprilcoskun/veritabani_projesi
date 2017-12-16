@@ -33,7 +33,7 @@
           </select>
         </div>
         <a class="btn btn-primary" href="javascript:listStudents()">Öğrenci Listele</a>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#myModalHorizontal">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addStudent">
           Öğrenci Kayıt
         </button>
       </div>
@@ -42,7 +42,7 @@
     </div>
     <!--Personeller-->
     <div id="staff" class="tab-pane fade">
-      <table class="table">
+      <table class="table" id="staffTable">
         <tr>
           <th>Ad</th>
           <th>Soyad</th>
@@ -68,6 +68,35 @@
         </tr>
         {{/each}}
       </table>
+      <div class="dropdown">
+        <button
+          class="btn btn-default dropdown-toggle"
+          type="button"
+          id="exportStaff"
+          data-toggle="dropdown"
+          aria-haspopup="true"
+          aria-expanded="true">
+          Export
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="exportStaff">
+          <li><a
+            download="Personeller.json"
+            href="data:text/json;charset=utf-8,{{json Staffs}}">JSON</a></li>
+          <li><a href="
+            javascript:
+            html2pdf(
+              document.getElementById('staffTable'),
+              {
+                margin:1,
+                filename:'Personeller.pdf',
+                html2canvas:{ dpi: 192 },
+                jsPDF:{ orientation: 'landscape' }
+              }
+            )">PDF</a></li>
+          <li><a href="#"></a></li>
+        </ul>
+      </div>
     </div>
     <!--Servis-->
     <div id="schoolbus" class="tab-pane fade">
@@ -85,7 +114,7 @@
   </div>
 
   <!--Öğrenci kayıt modal'ı -->
-  <div class="modal fade" id='myModalHorizontal' role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal fade" id='addStudent' role="dialog" aria-labelledby="addStudent" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

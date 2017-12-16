@@ -22,6 +22,7 @@ let studentExtraPhysical = document.getElementById('studentExtraPhysical');
 let studentExtraAllergic = document.getElementById('studentExtraAllergic');
 let classToList = document.getElementById('classToList');
 let studentsCache = [];
+
 /*DOGUM TARIHI SINIRLARI(2-6 YAS)*/
 let minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 6)).toJSON().split('T')[0];
 let maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 2)).toJSON().split('T')[0];
@@ -53,6 +54,14 @@ function calUnitPrice() {
 /*Ogrenci ekleme*/
 function addStudent() {
  let bDay = new Date(studentBday.value).toISOString().slice(0, 10).replace('T', ' ');
+ $('#addStudent').modal('hide');
+ $.notify({
+   // options
+   message: `${studentName.value} adlı öğrenci kaydedildi`
+ },{
+   // settings
+   type: 'success'
+ });
 }
 
 /*Ogrenci listeleme*/
@@ -68,14 +77,14 @@ function listStudents() {
       let student = students[i];
       if(student.ogr_ad)
         studentTableContent += `
-        <tr class="student" onclick="studentDetail('${i}')">
+        <tr class="student" onclick="studentDetail('${i}')" ondblclick="studentAlert('${i}')">
           <td class="class="col-md-2">${student.ogr_ad}</td>
           <td class="class="col-md-2">${student.ogr_soyad}</td>
           <td class="class="col-md-2">${student.ogr_tc}</td>
         </tr>`;
     }
     studentList.innerHTML = `
-    <table class="table">
+    <table class="table" id="studentTable">
       <tr>
         <th class="class="col-md-2">Ad</th>
         <th class="class="col-md-2">Soyad</th>
@@ -84,7 +93,32 @@ function listStudents() {
       ${studentTableContent}
     </table>
     `;
+    studentList.innerHTML += `
+    <div class="dropdown">
+      <button
+        class="btn btn-default dropdown-toggle"
+        type="button"
+        id="export"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="true">
+        Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="export">
+        <li><a download="${classToList.options[classToList.selectedIndex].value}.json" href="data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(studentsCache))}">JSON</a></li>
+        <li><a href="javascript:html2pdf(document.getElementById('studentTable'),{margin:6,filename:'${classToList.options[classToList.selectedIndex].value}.pdf',html2canvas:{ dpi: 192}})">PDF</a></li>
+        <li><a href="#"></a></li>
+      </ul>
+    </div>
+    `
   });
+}
+
+
+function studentAlert(i) {
+  let student = studentsCache[i];
+  console.log(student);
 }
 
 function studentDetail(i) {
@@ -127,3 +161,6 @@ function logout() {
   document.cookie = 'username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   location.reload();
 }
+
+// All units are in the set measurement for the document
+// This can be changed to "pt" (points), "mm" (Default), "cm", "in"
