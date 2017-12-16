@@ -21,7 +21,7 @@ let studentExtraSurname = document.getElementById('studentExtraSurname');
 let studentExtraPhysical = document.getElementById('studentExtraPhysical');
 let studentExtraAllergic = document.getElementById('studentExtraAllergic');
 let classToList = document.getElementById('classToList');
-
+let studentsCache = [];
 /*DOGUM TARIHI SINIRLARI(2-6 YAS)*/
 let minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 6)).toJSON().split('T')[0];
 let maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 2)).toJSON().split('T')[0];
@@ -63,31 +63,63 @@ function listStudents() {
   .then((response) => {
     return response.json();
   }).then(students => {
+    studentsCache = students;
     for (let i in students) {
       let student = students[i];
       if(student.ogr_ad)
         studentTableContent += `
-        <tr class="student" data-toggle="collapse" data-target="#${student.ogr_ad}">
-          <td>${student.ogr_ad}</td>
-          <td>${student.ogr_soyad}</td>
-          <td>${student.ogr_tc}</td>
-          <td>${student.ogr_dog_tar}</td>
-          <td>${student.ogr_cins}</td>
-        </tr><tr id="${student.ogr_ad}" class="collapse"><td>${student.ogr_ad}</td></tr>`;
+        <tr class="student" onclick="studentDetail('${i}')">
+          <td class="class="col-md-2">${student.ogr_ad}</td>
+          <td class="class="col-md-2">${student.ogr_soyad}</td>
+          <td class="class="col-md-2">${student.ogr_tc}</td>
+        </tr>`;
     }
     studentList.innerHTML = `
-    <table>
+    <table class="table">
       <tr>
-        <th>Ad</th>
-        <th>Soyad</th>
-        <th>T.C</th>
-        <th>Doğum Tarihi</th>
-        <th>Cinsiyet</th>
+        <th class="class="col-md-2">Ad</th>
+        <th class="class="col-md-2">Soyad</th>
+        <th class="class="col-md-2">T.C</th>
       </tr>
       ${studentTableContent}
     </table>
     `;
   });
+}
+
+function studentDetail(i) {
+  let studentDetail = document.getElementById('studentDetail');
+  let student = studentsCache[i];
+  let parent = student.ebeveyn[0];
+  studentDetail.innerHTML = `
+    <h4>Öğrenci Detayı</h4>
+    <label class="col-sm-4 control-label">Öğrenci Adı:</label>
+    <p class="col-sm-6">${student.ogr_ad}</p>
+    <label class="col-sm-4 control-label">Öğrenci Soyadı:</label>
+    <p class="col-sm-6">${student.ogr_soyad}</p>
+    <label class="col-sm-4 control-label">Öğrenci T.C:</label>
+    <p class="col-sm-6">${student.ogr_tc}</p>
+    <label class="col-sm-4 control-label">Öğrenci Cinsiyeti:</label>
+    <p class="col-sm-6">${student.ogr_cins == 'E' ? 'Erkek' : 'Kız'}</p>
+    <label class="col-sm-4 control-label">Öğrenci Adresi:</label>
+    <p class="col-sm-6">${student.ogr_adres}</p>
+    <label class="col-sm-4 control-label">Öğrenci Doğum Tarihi:</label>
+    <p class="col-sm-6">${student.ogr_dog_tar}</p>
+    <label class="col-sm-4 control-label">Öğrenci Yaş Grubu:</label>
+    <p class="col-sm-6">${student.ogr_yas_grup}</p>
+    <label class="col-sm-4 control-label">Öğrenci Kayıt Tarihi:</label>
+    <p class="col-sm-6">${student.ogr_adres}</p>
+    <label class="col-sm-4 control-label">Veli Adı:</label>
+    <p class="col-sm-6">${parent.veli_ad}</p>
+    <label class="col-sm-4 control-label">Veli Soyadı:</label>
+    <p class="col-sm-6">${parent.veli_soyad}</p>
+    <label class="col-sm-4 control-label">Veli Telefonu:</label>
+    <p class="col-sm-6">${parent.veli_tel}</p>
+    <label class="col-sm-4 control-label">Veli Mesleği:</label>
+    <p class="col-sm-6">${parent.veli_meslek}</p>
+    <label class="col-sm-6 control-label">Öğrencinin Kayıtlı Olduğu Servis:</label>
+    <p class="col-sm-6">${student.plaka ? student.plaka : 'Servis Kullanmıyor'}</p>
+  `;
 }
 
 /*Cikis Yapma*/

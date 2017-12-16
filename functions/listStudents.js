@@ -2,7 +2,7 @@ const sql = require('mssql');
 
 exports.attempt = async (Class) => {
   try {
-    const query = await sql.query`select * from ogrenci where sinif_ad=${Class} for json path`;
+    const query = await sql.query`select * from ogrenci inner join ebeveyn on ogrenci.ogr_tc = ebeveyn.ogr_tc where sinif_ad=${Class} for json auto`;
     return JSON.parse(first(query.recordset[0]));
   } catch(err) {
     console.error(err);

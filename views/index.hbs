@@ -24,25 +24,25 @@
   <div class="tab-content">
     <!--Öğrenciler-->
     <div id="students" class="tab-pane fade">
-      <div class="form-group">
-        <label class="col-sm-1 control-label" for="studentClass">Sınıf</label>
-        <div class="col-sm-9">
+      <div class="form-group" style="margin-top:12px;">
+        <div class="col-sm-3">
           <select class="form-control" id="classToList">
             {{#each Classes}}
             <option value="{{this.sinif_ad}}">{{this.sinif_ad}}</option>
             {{/each}}
           </select>
         </div>
-        <a class="col-sm-2 btn btn-primary" href="javascript:listStudents()">Öğrenci Listele</a>
+        <a class="btn btn-primary" href="javascript:listStudents()">Öğrenci Listele</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#myModalHorizontal">
+          Öğrenci Kayıt
+        </button>
       </div>
-      <div id="studentList"></div>
-      <button class="btn btn-primary " data-toggle="modal" data-target="#myModalHorizontal">
-        Öğrenci Kayıt
-      </button>
+      <div id="studentList" class="col-sm-6"></div>
+      <div id="studentDetail" class="col-sm-6"></div>
     </div>
     <!--Personeller-->
     <div id="staff" class="tab-pane fade">
-      <table>
+      <table class="table">
         <tr>
           <th>Ad</th>
           <th>Soyad</th>

@@ -40,9 +40,12 @@ textarea {
 }
 
 table {
-    font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
+}
+
+.btn {
+  margin-left: 4px !important;
 }
 
 td, th {
