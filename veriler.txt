@@ -1,0 +1,63 @@
+Insert Into personel Values('11111111111','Albus','Dumbledore','1925-1-1','5111111111','1950-1-1','Hogwarths','albus@dumbledore.com',20000,'Müdür','Aktif','1234567891111')
+Insert Into personel Values('44444444444','Minerva','McGonagall','1945-1-1','5111111114','1970-1-1','London','minerva@mcgonagall.com',10000,'Öğretmen','Aktif','1234567891114')
+Insert Into personel Values('22222222222','Severus','Snape','1950-1-1','5111111112','1975-1-1','London','severus@snape.com',10000,'Öğretmen','Aktif','1234567891112')
+Insert Into personel Values('55555555555','Gilderoy','Lockhart','1950-1-1','5111111115','1975-1-1','Erzurum','gilderoy@lockhart.com',10000,'Öğretmen','Aktif','1234567891115')
+Insert Into personel Values('33333333333','Rebeus','Hagrid','1955-1-1','5111111113','1980-1-1','Batman','rebeus@hagrid.com',5000,'Hademe','Aktif','1234567891113')
+Insert Into personel Values('66666666666','Argus','Filch','1955-1-1','5111111116','1980-1-1','Kıbrıs','argus@filch.com',5000,'Hademe','Pasif','1234567891116')
+
+Insert Into giris Values(11111111111,'albus1234','5d9d7d86df3dd8b6310ca3655b6d45a296c55d9c7aa793bbeb2f7f68cfb10a4c')
+Insert Into giris Values(22222222222,'severus1234','771962ac60a6c7373bc06502503148bda1f902ed86693e41c2ac5afbf33566bd')
+Insert Into giris Values(33333333333,'admin','8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918')
+
+Insert Into envanter Values('Buzdolabı',2000,2,'1950-1-1','Vestel','8502224123',33333333333)
+Insert Into envanter Values('BulasikM',1500,4,'1951-01-01','Vestel','8502224123',33333333333)
+Insert Into envanter Values('Lego',10,50,'1950-1-1','Toyz','5433075449',22222222222)
+
+Insert Into servis Values('Düzce-Ukrayna','79AA311','Recep','İvedik','5396777163')
+Insert Into servis Values('Düzce-Rusya','78BB652','Mahmut','Tuncer','5396777164')
+
+Insert Into sinif Values('Slytherin',20,'2-4')
+Insert Into sinif Values('Gryffindor',12,'4-6')
+Insert Into sinif Values('Hufflepuff',15,'2-4')
+Insert Into sinif Values('Ravenclaw',20,'4-6')
+
+Insert Into ogrenci Values(22193561830,'Ronald','Weasley','2013-02-28','E','Geyveli','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
+Insert Into ogrenci Values(14587369463,'Hermione','Granger','2014-02-28','K','Adıyaman','2016-02-28','Aktif','4-6','78BB652','Gryffindor')
+Insert Into ogrenci Values(30646777777,'Harry','Potter','2014-02-28','E','Beyköy','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
+Insert Into ogrenci Values(30646777778,'Draco','Malfoy','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
+Insert Into ogrenci Values(30646777748,'Gregory','Goyle','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
+Insert Into ogrenci Values(30646777715,'Luna','Lovegood','2014-02-28','K','London','2016-02-28','Aktif','4-6','79AA311','Ravenclaw')
+
+Insert Into ebeveyn Values(22193561830,'Aziz','Weasley','5422221122','Patron')
+Insert Into ebeveyn Values(30646777777,'Ahmet','Potter','5433221112','Müdür')
+Insert Into ebeveyn Values(14587369463,'Müslüm','Granger','5422221133','Genel Müdür')
+Insert Into ebeveyn Values(30646777778,'Sirius','Malfoy','5422221134','Memur')
+Insert Into ebeveyn Values(30646777748,'Kibariye','Goyle','5422221143','Emekli')
+Insert Into ebeveyn Values(30646777715,'Ferdi','Lovegood','5422221433','Pompacı')
+
+Insert Into ekbilgi Values(22193561830,'Havva','Karaüzüm','5422225689','Dayı kızı','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values(30646777777,'Hayime','Arçelik','5422221364','Emmoglu','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values(14587369463,'Meryem','Kaymak','5422244748','Amca kızı','Herhangi bir engeli yok','Yok')
+
+
+Create Procedure sp_ogrencikayit
+	@tc varchar(11),@ad varchar(15),@soyad varchar(20),@dogtar date,@cins char(1),@adres varchar(200),@kayittar date,
+	@durum varchar(5),@yasgrup varchar(3),@plaka varchar(9),@sinif varchar(15),@veli_ad varchar(15),
+	@veli_soyad varchar(15),@veli_tel varchar(10),@veli_meslek varchar(15),@ek_ad varchar(15),@ek_soyad varchar(15),
+	@ek_tel varchar(10),@aciklama varchar(50),@beden_durum varchar(50),@alerji varchar(25)
+As
+	IF(Select Count(*) From personel where per_tc = @tc)=0
+	Begin
+		Insert Into ogrenci Values(@tc,@ad,@soyad,@dogtar,@cins,@adres,@kayittar,@durum,@yasgrup,@plaka,@sinif)
+	End
+	Else
+	Begin
+		Return print('aaa')
+	End
+
+	Insert Into ebeveyn Values(@tc,@veli_ad,@veli_soyad,@veli_tel,@veli_meslek)
+	Insert Into ekbilgi Values(@tc,@ek_ad,@ek_soyad,@ek_tel,@aciklama,@beden_durum,@alerji)
+Go
+
+
+Exec sp_ogrencikayit tc,'ad','soyad','dogtar','cins','adres','kayittar','durum','yasgrup','per_tc','plaka','sinif','veli_ad','veli_tel','veli_meslek','veli_soyad','ek_ad','ek_soyad','ek_tel','aciklama','beden_durum','alerji'
