@@ -21,23 +21,26 @@ Insert Into sinif Values('Gryffindor',12,'4-6')
 Insert Into sinif Values('Hufflepuff',15,'2-4')
 Insert Into sinif Values('Ravenclaw',20,'4-6')
 
-Insert Into ogrenci Values(22193561830,'Ronald','Weasley','2013-02-28','E','Geyveli','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
-Insert Into ogrenci Values(14587369463,'Hermione','Granger','2014-02-28','K','Adıyaman','2016-02-28','Aktif','4-6','78BB652','Gryffindor')
-Insert Into ogrenci Values(30646777777,'Harry','Potter','2014-02-28','E','Beyköy','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
-Insert Into ogrenci Values(30646777778,'Draco','Malfoy','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
-Insert Into ogrenci Values(30646777748,'Gregory','Goyle','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
-Insert Into ogrenci Values(30646777715,'Luna','Lovegood','2014-02-28','K','London','2016-02-28','Aktif','4-6','79AA311','Ravenclaw')
+Insert Into ogrenci Values('22193561830','Ronald','Weasley','2013-02-28','E','Geyveli','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
+Insert Into ogrenci Values('14587369463','Hermione','Granger','2014-02-28','K','Adıyaman','2016-02-28','Aktif','4-6','78BB652','Gryffindor')
+Insert Into ogrenci Values('30646777777','Harry','Potter','2014-02-28','E','Beyköy','2016-02-28','Aktif','4-6','79AA311','Gryffindor')
+Insert Into ogrenci Values('30646777778','Draco','Malfoy','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
+Insert Into ogrenci Values('30646777748','Gregory','Goyle','2014-02-28','E','London','2016-02-28','Aktif','4-6','79AA311','Slytherin')
+Insert Into ogrenci Values('30646777715','Luna','Lovegood','2014-02-28','K','London','2016-02-28','Aktif','4-6','79AA311','Ravenclaw')
 
-Insert Into ebeveyn Values(22193561830,'Aziz','Weasley','5422221122','Patron')
-Insert Into ebeveyn Values(30646777777,'Ahmet','Potter','5433221112','Müdür')
-Insert Into ebeveyn Values(14587369463,'Müslüm','Granger','5422221133','Genel Müdür')
-Insert Into ebeveyn Values(30646777778,'Sirius','Malfoy','5422221134','Memur')
-Insert Into ebeveyn Values(30646777748,'Kibariye','Goyle','5422221143','Emekli')
-Insert Into ebeveyn Values(30646777715,'Ferdi','Lovegood','5422221433','Pompacı')
+Insert Into ebeveyn Values('22193561830','Aziz','Weasley','5422221122','Patron')
+Insert Into ebeveyn Values('14587369463','Ahmet','Potter','5433221112','Müdür')
+Insert Into ebeveyn Values('30646777777','Müslüm','Granger','5422221133','Genel Müdür')
+Insert Into ebeveyn Values('30646777778','Sirius','Malfoy','5422221134','Memur')
+Insert Into ebeveyn Values('30646777748','Kibariye','Goyle','5422221143','Emekli')
+Insert Into ebeveyn Values('30646777715','Ferdi','Lovegood','5422221433','Pompacı')
 
-Insert Into ekbilgi Values(22193561830,'Havva','Karaüzüm','5422225689','Dayı kızı','Herhangi bir engeli yok','Yok')
-Insert Into ekbilgi Values(30646777777,'Hayime','Arçelik','5422221364','Emmoglu','Herhangi bir engeli yok','Yok')
-Insert Into ekbilgi Values(14587369463,'Meryem','Kaymak','5422244748','Amca kızı','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('22193561830','Havva','Karaüzüm','5422225689','Dayı kızı','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('14587369463','Hayime','Arçelik','5422221364','Emmoglu','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('30646777777','Meryem','Kaymak','5422244748','Amca kızı','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('30646777778','Havva1','Karaüzüm1','5422225680','Dayı kızı1','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('30646777748','Hayime1','Arçelik1','5422221361','Emmoglu1','Herhangi bir engeli yok','Yok')
+Insert Into ekbilgi Values('30646777715','Meryem1','Kaymak1','5422244742','Amca kızı1','Herhangi bir engeli yok','Yok')
 
 
 Create Procedure sp_ogrencikayit
@@ -60,4 +63,4 @@ As
 Go
 
 
-Exec sp_ogrencikayit tc,'ad','soyad','dogtar','cins','adres','kayittar','durum','yasgrup','per_tc','plaka','sinif','veli_ad','veli_tel','veli_meslek','veli_soyad','ek_ad','ek_soyad','ek_tel','aciklama','beden_durum','alerji'
+Exec sp_ogrencikayit tc,'ad','soyad','dogtar','cins','adres','kayittar','durum','yasgrup','plaka','sinif','veli_ad','veli_soyad','veli_tel','veli_meslek','ek_ad','ek_soyad','ek_tel','aciklama','beden_durum','alerji'
