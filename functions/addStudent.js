@@ -1,43 +1,35 @@
 const sql = require('mssql');
 
 exports.attempt = async (student) => {
-  let {tc, name, surname, bDay, gender, address,
+  let {tc, name, surname, bDay, ageGroup, gender, address,
   status, plate, sClass, parentName,
   parentPhone, parentJob, parentSurname, extraName, extraSurname,
   extraPhone, extraState, extraPhysical, extraAllergic} = student;
-  console.log(gender);
-  try {
-    let a = await sql.query`
-      Exec sp_ogrencikayit
-      ${tc},
-      '${name}',
-      '${surname}',
-      ${bDay},
-      '${gender}',
-      '${address}',
-      ${new Date().toISOString().slice(0, 10).replace('T', ' ')},
-      'Aktif',
-      '4-6',
-      '${plate}',
-      '${sClass}',
-      '${parentName}',
-      '${parentSurname}',
-      ${parentPhone},
-      '${parentJob}',
-      '${extraName}',
-      '${extraSurname}',
-      ${extraPhone},
-      '${extraState}',
-      '${extraPhysical}',
-      '${extraAllergic}'`;
-      console.log(a);
-  } catch (err){
-    console.error(err.originalError);
-    return {status:500};
-  }
-  return {status:200};
-}
+    const request = new sql.Request()
+    .input('tc', tc)
+    .input('ad', name)
+    .input('soyad', surname)
+    .input('dogtar', bDay)
+    .input('cins', gender)
+    .input('adres', address)
+    .input('kayittar', new Date().toISOString().slice(0, 10).replace('T', ' '))
+    .input('durum', 'Aktif')
+    .input('yasgrup', ageGroup)
+    .input('plaka', plate)
+    .input('sinif', sClass)
+    .input('veli_ad', parentName)
+    .input('veli_soyad', parentSurname)
+    .input('veli_tel', parentPhone)
+    .input('veli_meslek', parentJob)
+    .input('ek_ad', extraName)
+    .input('ek_soyad', extraSurname)
+    .input('ek_tel', extraPhone)
+    .input('aciklama', extraState)
+    .input('beden_durum', extraPhysical)
+    .input('alerji', extraAllergic)
 
-function first(obj) {
-    for (let a in obj) return obj[a];
+    let exec = await request.execute('sp_ogrenci_kayit');
+
+    return exec.returnValue == 1 ? {status:200} : {status:500};
+
 }

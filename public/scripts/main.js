@@ -58,11 +58,13 @@ function addStudent() {
   student.name = studentName.value;
   student.surname = studentSurname.value;
   student.bDay = new Date(studentBday.value).toISOString().slice(0, 10).replace('T', ' ');
+  student.ageGroup = new Date().getFullYear() - new Date(student.bDay).getFullYear() < 4 ?
+   '2-4' : '4-6';
   student.gender = document.getElementById('male').checked ? 'E' : 'K';
   student.address = studentAddress.value;
   student.sClass = studentClass.options[studentClass.selectedIndex].value;
-  student.bus = studentSchoolBus.options[studentSchoolBus.selectedIndex].value == 'none' ? null :
-    studentSchoolBus.options[studentSchoolBus.selectedIndex].value;
+  student.bus = studentSchoolBus.options[studentSchoolBus.selectedIndex].value == 'none' ?
+   null : studentSchoolBus.value;
   student.parentName = studentParentName.value;
   student.parentSurname = studentParentSurname.value;
   student.parentPhone = studentParentPhone.value;
@@ -77,7 +79,7 @@ function addStudent() {
   student.extraState = studentExtraState.value;
   student.extraPhysical = studentExtraPhysical.value;
   student.extraAllergic = studentExtraAllergic.value;
-
+  console.log(student);
   return fetch('/student', {
       method: 'POST',
       credentials: 'include',
