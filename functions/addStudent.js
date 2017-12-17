@@ -1,37 +1,38 @@
 const sql = require('mssql');
 
-exports.attempt = async (
-  tc, name, surname, bDay, gender, address,
-  status, yasgrup, plate, sClass, PName,
-  pPhone, pJob, pSurname, extraName, extraSurname,
-  extraPhone, extraState, extraPhysical, extraAllergic
-) => {
+exports.attempt = async (student) => {
+  let {tc, name, surname, bDay, gender, address,
+  status, plate, sClass, parentName,
+  parentPhone, parentJob, parentSurname, extraName, extraSurname,
+  extraPhone, extraState, extraPhysical, extraAllergic} = student;
+  console.log(gender);
   try {
-    await sql.query`
-      exec sp_ogrencikayit
-      '${tc}',
+    let a = await sql.query`
+      Exec sp_ogrencikayit
+      ${tc},
       '${name}',
       '${surname}',
-      '${bDay}',
+      ${bDay},
       '${gender}',
       '${address}',
-      '${new Date().toISOString().slice(0, 10).replace('T', ' ')}',
-      '${status}',
-      '${yasgrup}',
+      ${new Date().toISOString().slice(0, 10).replace('T', ' ')},
+      'Aktif',
+      '4-6',
       '${plate}',
       '${sClass}',
-      '${PName}',
-      '${pPhone}',
-      '${pJob}',
-      '${pSurname}',
+      '${parentName}',
+      '${parentSurname}',
+      ${parentPhone},
+      '${parentJob}',
       '${extraName}',
       '${extraSurname}',
-      '${extraPhone}',
+      ${extraPhone},
       '${extraState}',
       '${extraPhysical}',
       '${extraAllergic}'`;
+      console.log(a);
   } catch (err){
-    console.error(err);
+    console.error(err.originalError);
     return {status:500};
   }
   return {status:200};

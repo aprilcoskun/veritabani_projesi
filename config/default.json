@@ -4,6 +4,7 @@
         "server"  : "52.164.200.179",
         "userName": "SA",
         "password": "anaokulu_123",
+        "config.parseJSON": false,
         "options": { "database": "anaokulu" }
     }
 }

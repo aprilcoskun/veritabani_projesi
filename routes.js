@@ -41,6 +41,13 @@ router.post('/auth', async(req, res) => {
   .catch(err => console.error(err));
 });
 
+router.post('/student', (req, res) => {
+  addStudent.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err))
+
+})
+
 router.get('/student/:class', (req, res) => {
   listStudents.attempt(req.params.class)
   .then(data => res.status(200).json(data))

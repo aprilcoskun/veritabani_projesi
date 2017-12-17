@@ -5,16 +5,15 @@
       <div class="collapse navbar-collapse" id="deviceNavbar">
         <ul class="nav navbar-nav">
           <li><a data-toggle="tab" href="#students">Öğrenciler</a></li>
-          {{#if Admin}}
-          <li><a data-toggle="tab" href="#staff">Personeller</a></li>
-          {{/if}}
           <li><a data-toggle="tab" href="#schoolbus">Servis</a></li>
           <li><a data-toggle="tab" href="#inventory">Envanter</a></li>
           <li><a data-toggle="tab" href="#budget">Bütçe</a></li>
-          <li class="pull-right">
-            <a data-toggle="tab" href="#settings">
-              <i class="fa fa-cog" aria-hidden="true"></i>
-            </a>
+          {{#if Admin}}
+          <li><a data-toggle="tab" href="#staff">Personeller</a></li>
+          <li><a data-toggle="tab" href="#users">Kullanıcılar</a></li>
+          {{/if}}
+          <li>
+            <a data-toggle="tab" href="#settings"><i class="fa fa-cog" aria-hidden="true"></i></a>
           </li>
         </ul>
       </div>
@@ -40,22 +39,34 @@
       <div id="studentList" class="col-sm-6"></div>
       <div id="studentDetail" class="col-sm-6"></div>
     </div>
+    <!--Servis-->
+    <div id="schoolbus" class="tab-pane fade">
+    </div>
+    <!--Envanter-->
+    <div id="inventory" class="tab-pane fade">
+    </div>
+    <!--Bütçe-->
+    <div id="budget" class="tab-pane fade">
+    </div>
     <!--Personeller-->
-    <div id="staff" class="tab-pane fade">
-      <table class="table" id="staffTable">
-        <tr>
-          <th>Ad</th>
-          <th>Soyad</th>
-          <th>T.C</th>
-          <th>Doğum Tarihi</th>
-          <th>Telefon No.</th>
-          <th>Maaş</th>
-          <th>Görev</th>
-          <th>Eposta</th>
-          <th>Sigorta No.</th>
-        </tr>
+    {{#if Admin}}
+    <div id="staff" class="tab-pane fade col-sm-12">
+      <table class="table table-bordered table-hover table-responsive table-striped" id="staffTable">
+        <thead>
+          <tr>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>T.C</th>
+            <th>Doğum Tarihi</th>
+            <th>Telefon</th>
+            <th>Maaş</th>
+            <th>Görev</th>
+            <th>Eposta</th>
+            <th>Sigorta No.</th>
+          </tr>
+        </thead>
         {{#each Staffs}}
-        <tr>
+        <tr class="staff">
           <td>{{this.per_ad}}</td>
           <td>{{this.per_soyad}}</td>
           <td>{{this.per_tc}}</td>
@@ -83,31 +94,16 @@
           <li><a
             download="Personeller.json"
             href="data:text/json;charset=utf-8,{{json Staffs}}">JSON</a></li>
-          <li><a href="
-            javascript:
-            html2pdf(
-              document.getElementById('staffTable'),
-              {
-                margin:1,
-                filename:'Personeller.pdf',
-                html2canvas:{ dpi: 192 },
-                jsPDF:{ orientation: 'landscape' }
-              }
-            )">PDF</a></li>
+          <li><a href="javascript:staffToPDF()">PDF</a></li>
           <li><a href="#"></a></li>
         </ul>
       </div>
     </div>
-    <!--Servis-->
-    <div id="schoolbus" class="tab-pane fade">
+    <div id="users" class="tab-pane fade">
     </div>
-    <!--Envanter-->
-    <div id="inventory" class="tab-pane fade">
-    </div>
-    <!--Bütçe-->
-    <div id="budget" class="tab-pane fade">
-    </div>
-    <!--Öğrenciler-->
+    {{/if}}
+
+    <!--Ayarlar-->
     <div id="settings" class="tab-pane fade">
       <a class="btn btn-primary" href="javascript:logout()">Çıkış Yap</a>
     </div>
@@ -150,7 +146,7 @@
               <label class="col-sm-2 control-label">Cinsiyet</label>
               <div class="col-sm-10">
                 <div class="radio-inline">
-                  <label><input type="radio" name="optradio" checked><i class="fa fa-mars" aria-hidden="true"></i>E</label>
+                  <label><input id="male" type="radio" name="optradio" checked><i class="fa fa-mars" aria-hidden="true"></i>E</label>
                 </div>
                 <div class="radio-inline">
                   <label><input type="radio" name="optradio"><i class="fa fa-venus" aria-hidden="true"></i>K</label>
