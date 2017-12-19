@@ -22,17 +22,25 @@ let studentExtraPhysical = document.getElementById('studentExtraPhysical');
 let studentExtraAllergic = document.getElementById('studentExtraAllergic');
 let classToList = document.getElementById('classToList');
 let studentsCache = [];
+let busesCache = [];
+let inventoryCache = [];
 let studentList = document.getElementById('studentList');
-listStudents();
+let schoolBus = document.getElementById('schoolbus');
+let inventory = document.getElementById('inventory');
 
-/*DOGUM TARIHI SINIRLARI(2-6 YAS)*/
+let staffBday = document.getElementById('staffBday');
+
+/*DOGUM TARIHI SINIRLARI*/
+
 let minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 6)).toJSON().split('T')[0];
 let maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - 2)).toJSON().split('T')[0];
 
 studentBday.setAttribute('min', minDate);
 studentBday.setAttribute('max', maxDate);
-
-studentBday.setAttribute('value', maxDate);
+staffBday.setAttribute(
+  'max',
+  new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toJSON().split('T')[0]
+);
 
 /*Birim Taksit Hesabi*/
 function calUnitPrice() {
@@ -109,6 +117,14 @@ function addStudent() {
 
 /*Ogrenci listeleme*/
 function listStudents() {
+  let first = true;
+  if($('#studentTable')[0]) {
+    first = false;
+    $('#studentTable').animateCss('flipOutX', function(){
+      $("#studentTable").css('opacity', '0');
+    });
+  }
+
   let studentTableContent = ``;
   fetch(`/student/${classToList.value}`,{credentials: 'include'})
   .then(response => response.json()).then(students => {
@@ -159,6 +175,13 @@ function listStudents() {
         <li><a href="#"></a></li>
       </ul>
     </div>`;
+    if(!first) {
+      $("#studentTable").css('opacity', '1');
+      $('#studentTable').animateCss('flipInX');
+    } else {
+      $('#studentTable').animateCss('zoomIn');
+    }
+
   })
   .catch(err => console.error(err));
 }
@@ -170,9 +193,12 @@ function studentAlert(i) {
 
 /*OGRENCI DETAY*/
 function studentDetail(i) {
+  $('#studentDetail').animateCss('zoomIn');
   let studentDetail = document.getElementById('studentDetail');
+
   let student = studentsCache[i];
   let parent = student.ebeveyn[0];
+  let extra = student.ebeveyn[0].ekbilgi[0];
   studentDetail.innerHTML = `
     <h4>Öğrenci Detayı</h4>
     <label class="col-sm-4 control-label">Öğrenci Adı:</label>
@@ -199,9 +225,214 @@ function studentDetail(i) {
     <p class="col-sm-6">${parent.veli_tel}</p>
     <label class="col-sm-4 control-label">Veli Mesleği:</label>
     <p class="col-sm-6">${parent.veli_meslek}</p>
-    <label class="col-sm-6 control-label">Öğrencinin Kayıtlı Olduğu Servis:</label>
+    <label class="col-sm-4 control-label">Öğrencinin Servisi:</label>
     <p class="col-sm-6">${student.plaka ? student.plaka : 'Servis Kullanmıyor'}</p>
-  `;
+    <label class="col-sm-4 control-label">Ek Ad:</label>
+    <p class="col-sm-6">${extra.ek_ad}</p>
+    <label class="col-sm-4 control-label">Ek Soyad:</label>
+    <p class="col-sm-6">${extra.ek_soyad}</p>
+    <label class="col-sm-4 control-label">Ek Açıklama:</label>
+    <p class="col-sm-6">${extra.ek_aciklama}</p>
+    <label class="col-sm-4 control-label">Ek Tel:</label>
+    <p class="col-sm-6">${extra.ek_tel}</p>
+    <label class="col-sm-4 control-label">Ek Beden Durum:</label>
+    <p class="col-sm-6">${extra.ek_beden_durum}</p>
+    <label class="col-sm-4 control-label">Ek Alerji:</label>
+    <p class="col-sm-6">${extra.ek_alerji}</p>`;
+}
+
+function listSchoolBuses() {
+  let first = true;
+  if($('#busesTable')[0]) {
+    first = false;
+    $('#busesTable').animateCss('flipOutX', function(){
+      $("#busesTable").css('opacity', '0');
+    });
+  }
+
+  let busTableContent = ``;
+  fetch(`/bus`,{credentials: 'include'})
+  .then(response => response.json()).then(buses => {
+    busesCache = buses;
+    for (let i in buses) {
+      let bus = buses[i];
+        busTableContent += `
+        <tr class="staff">
+          <td>${bus.sofor_ad}</td>
+          <td>${bus.sofor_soyad}</td>
+          <td>${bus.ser_tel}</td>
+          <td>${bus.guzergah}</td>
+          <td>${bus.plaka}</td>
+        </tr>`;
+    }
+    schoolBus.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listSchoolBuses()">Servisleri Listele</a>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addBus">
+        Servis Kayıt
+      </button>
+    </div>
+    <table class="table table-striped table-bordered table-hover" id="busesTable">
+      <thead>
+        <tr>
+          <th>Şöför Adı</th>
+          <th>Şöför Soyadı</th>
+          <th>Şöför Telefonu</th>
+          <th>Güzergah</th>
+          <th>Plaka</th>
+        </tr>
+      </thead>
+      ${busTableContent}
+    </table>
+    `;
+    if(!first) {
+      $("#busesTable").css('opacity', '1');
+      $('#busesTable').animateCss('flipInX');
+    } else {
+      $('#busesTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function listInventory() {
+  let first = true;
+  if($('#inventoryTable')[0]) {
+    first = false;
+    $('#inventoryTable').animateCss('flipOutX', function(){
+      $("#inventoryTable").css('opacity', '0');
+    });
+  }
+
+  let inventoryTableContent = ``;
+  fetch(`/inventory`,{credentials: 'include'})
+  .then(response => response.json()).then(stuffs => {
+    inventoryCache = stuffs;
+    for (let i in stuffs) {
+      let stuff = stuffs[i];
+        inventoryTableContent += `
+        <tr class="staff">
+          <td>${stuff.urun_no}</td>
+          <td>${stuff.urun_ad}</td>
+          <td>${stuff.birim_fiyat}</td>
+          <td>${stuff.adet}</td>
+          <td>${stuff.toplam_fiyat}</td>
+          <td>${stuff.urun_kayit_tar}</td>
+          <td>${stuff.firma_ad}</td>
+          <td>${stuff.firma_tel}</td>
+          <td>${stuff.personel[0].per_ad} ${stuff.personel[0].per_soyad}</td>
+        </tr>`;
+    }
+
+    inventory.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listInventory()">Envanteri Listele</a>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addStuff">
+        Eşya Kayıt
+      </button>
+    </div>
+    <table class="table table-striped table-bordered table-hover" id="inventoryTable">
+      <thead>
+        <tr>
+          <th>Ürün No.</th>
+          <th>Ürün Adı</th>
+          <th>Birim Fiyat</th>
+          <th>Adet</th>
+          <th>Toplam Fiyat</th>
+          <th>Ürün Kayıt Tarihi</th>
+          <th>Firma Ad</th>
+          <th>Firma Tel</th>
+          <th>Personel</th>
+        </tr>
+      </thead>
+      ${inventoryTableContent}
+    </table>
+    `;
+    if(!first) {
+      $("#inventoryTable").css('opacity', '1');
+      $('#inventoryTable').animateCss('flipInX');
+    } else {
+      $('#inventoryTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function addUser() {
+  let user = {
+    username: document.getElementById('userName').value,
+    pass: document.getElementById('userPassword').value,
+    tc: document.getElementById('userStaff').value
+  };
+  return fetch('/user', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(user)
+  })
+  .then(response => {
+    $('#addUser').modal('hide');
+    if(response.status < 400) {
+      $.notify({
+        message: `${user.username.value} kaydedildi.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `${user.username.value} kaydedilemedi! HATA:(${response.status})`
+      },{
+        type: 'danger'
+      });
+    }
+  })
+  .catch(err => console.error(err))
+}
+
+
+function addStaff() {
+  let staff = {
+    tc: document.getElementById('staffTC').value,
+    name: document.getElementById('staffName').value,
+    surname: document.getElementById('staffSurname').value,
+    bDay: staffBday.value,
+    phone: document.getElementById('staffPhone').value,
+    position: document.getElementById('staffPosition').value,
+    email: document.getElementById('staffEmail').value,
+    salary: document.getElementById('staffSalary').value,
+    insurance: document.getElementById('staffInsurance').value,
+  };
+  return fetch('/staff', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(staff)
+  })
+  .then(response => {
+    $('#addStaff').modal('hide');
+    if(response.status < 400) {
+      $.notify({
+        message: `${staff.name} kaydedildi.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `${staff.name} kaydedilemedi! HATA:(${response.status})`
+      },{
+        type: 'danger'
+      });
+    }
+  })
+  .catch(err => console.error(err))
 }
 
 /*PDF CIKTILARI*/
@@ -237,4 +468,26 @@ function studentsToPDF() {
 function logout() {
   document.cookie = 'username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   location.reload();
+}
+
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+        this.addClass('animated ' + animationName).one(animationEnd, function() {
+            $(this).removeClass('animated ' + animationName);
+            if (callback) {
+              callback();
+            }
+        });
+        return this;
+    }
+});
+
+function clearInputs() {
+  let elements = document.getElementsByTagName('input');
+  for (let ii=0; ii < elements.length; ii++) {
+    if (elements[ii].type == "text") {
+      elements[ii].value = "";
+    }
+  }
 }

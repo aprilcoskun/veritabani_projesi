@@ -40,10 +40,22 @@
       <div id="studentDetail" class="col-sm-6"></div>
     </div>
     <!--Servis-->
-    <div id="schoolbus" class="tab-pane fade">
+    <div id="schoolbus" class="tab-pane fade col-sm-12">
+      <div class="form-group" style="margin-top:12px;">
+        <a class="btn btn-primary" href="javascript:listSchoolBuses()">Servisleri Listele</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addBus">
+          Servis Kayıt
+        </button>
+      </div>
     </div>
     <!--Envanter-->
     <div id="inventory" class="tab-pane fade">
+      <div class="form-group" style="margin-top:12px;">
+        <a class="btn btn-primary" href="javascript:listInventory()">Envanteri Listele</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addStuff">
+          Eşya Kayıt
+        </button>
+      </div>
     </div>
     <!--Bütçe-->
     <div id="budget" class="tab-pane fade">
@@ -51,12 +63,17 @@
     <!--Personeller-->
     {{#if Admin}}
     <div id="staff" class="tab-pane fade col-sm-12">
+      <div class="form-group" style="margin-top:12px;">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addStaff">
+          Personel Kayıt
+        </button>
+      </div>
       <table class="table table-bordered table-hover table-responsive table-striped" id="staffTable">
         <thead>
           <tr>
+            <th>T.C</th>
             <th>Ad</th>
             <th>Soyad</th>
-            <th>T.C</th>
             <th>Doğum Tarihi</th>
             <th>Telefon</th>
             <th>Maaş</th>
@@ -67,9 +84,9 @@
         </thead>
         {{#each Staffs}}
         <tr class="staff">
+          <td>{{this.per_tc}}</td>
           <td>{{this.per_ad}}</td>
           <td>{{this.per_soyad}}</td>
-          <td>{{this.per_tc}}</td>
           <td>{{this.per_dog_tar}}</td>
           <td>{{this.per_tel}}</td>
           <td>{{this.per_maas}}</td>
@@ -99,7 +116,28 @@
         </ul>
       </div>
     </div>
-    <div id="users" class="tab-pane fade">
+    <div id="users" class="tab-pane fade col-sm-12">
+      <div class="form-group" style="margin-top:12px;">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addUser">
+          Kullanıcı Kayıt
+        </button>
+      </div>
+      <table class="table table-bordered table-hover table-responsive table-striped" id="usersTable">
+        <thead>
+          <tr>
+            <th>T.C</th>
+            <th>Kullanıcı Adı</th>
+            <th>Hash'lenmiş şifre</th>
+          </tr>
+        </thead>
+        {{#each users}}
+        <tr class="staff">
+          <td>{{this.per_tc}}</td>
+          <td>{{this.kullanici_adi}}</td>
+          <td>{{this.kullanici_sifre}}</td>
+        </tr>
+        {{/each}}
+      </table>
     </div>
     {{/if}}
 
@@ -296,6 +334,286 @@
             İptal
           </button>
           <a class="btn btn-primary" href="javascript:addStudent()">Kaydet</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Personel kayıt modal'ı -->
+  <div class="modal fade" id='addStaff' role="dialog" aria-labelledby="addStaff" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Personel Bilgileri</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label  class="col-sm-2 control-label" for="staffTC">T.C. No</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staffTC" maxlength="11"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffName">Ad</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staffName" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffSurname" >Soyad</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staffSurname" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffBday" >Doğum Tarihi</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="staffBday"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffPhone">Telefon</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staffPhone">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffSalary">Maaş</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staffSalary"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffPosition">Görev</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="staffPosition">
+                  <option value="Müdür">Müdür</option>
+                  <option value="Öğretmen">Öğretmen</option>
+                  <option value="Hademe">Hademe</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffEmail">Eposta</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="staffEmail"></textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="staffInsurance">Sigorta No.</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staffInsurance">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            İptal
+          </button>
+          <a class="btn btn-primary" href="javascript:addStaff()">Kaydet</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Servis kayıt modal'ı -->
+  <div class="modal fade" id='addBus' role="dialog" aria-labelledby="addBus" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Servis Bilgileri</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busName">Şöför Adı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busName" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busSurname">Şöför Soyadı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busSurname" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPhone">Şöför Telefonu</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="busPhone">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPath">Güzergah</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busPath" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPlate">Plaka</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busPlate" maxlength="20"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            İptal
+          </button>
+          <a class="btn btn-primary" href="javascript:addBus()">Kaydet</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Envanter kayıt modal'ı -->
+  <div class="modal fade" id='addStuff' role="dialog" aria-labelledby="addStuff" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Eşya Bilgileri</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffName">Eşya Adı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="stuffName" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffPrice">Birim Fiyat</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="stuffPrice"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffNum">Adet</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="stuffNum">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffCompName">Firma Adı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="stuffCompName" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffCompPhone">Firma Telefonu</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="stuffCompPhone">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="stuffStaff">Personel</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="stuffStaff">
+                  {{#each Staffs}}
+                  <option value="{{this.per_tc}}">{{this.per_ad}} {{this.per_soyad}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            İptal
+          </button>
+          <a class="btn btn-primary" href="javascript:addStuff()">Kaydet</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Servis kayıt modal'ı -->
+  <div class="modal fade" id='addBus' role="dialog" aria-labelledby="addBus" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Servis Bilgileri</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busName">Şöför Adı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busName" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busSurname">Şöför Soyadı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busSurname" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPhone">Şöför Telefonu</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="busPhone">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPath">Güzergah</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busPath" maxlength="20"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="busPlate">Plaka</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="busPlate" maxlength="20"/>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            İptal
+          </button>
+          <a class="btn btn-primary" href="javascript:addBus()">Kaydet</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Envanter kayıt modal'ı -->
+  <div class="modal fade" id='addUser' role="dialog" aria-labelledby="addUser" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4>Kullanıcı Bilgileri</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="userName">Kullanıcı Adı</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="userName" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="userPassword">Şifre</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" id="userPassword" maxlength="15"/>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-2 control-label" for="userStaff">Personel</label>
+              <div class="col-sm-10">
+                <select class="form-control" id="userStaff">
+                  {{#each Staffs}}
+                  <option value="{{this.per_tc}}">{{this.per_ad}} {{this.per_soyad}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            İptal
+          </button>
+          <a class="btn btn-primary" href="javascript:addUser()">Kaydet</a>
         </div>
       </div>
     </div>

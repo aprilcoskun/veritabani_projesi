@@ -7,8 +7,9 @@ const http = require('http');
 const config = require('./config/default.json');
 const routes = require('./routes');
 const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 //SQL BAGLANTISI
-require('mssql').connect(config.dbIp);
+require('mssql').connect(config.connection);
 
 /*GEREKLI DEGER ATAMALARI*/
 const PORT = 3000;
@@ -27,8 +28,32 @@ app.set('view engine', 'hbs');
 app.use(express.static(path.join(__dirname, 'public')));
 
 /*MORGAN(LOGLAMA KUTUPHANESI) KURULUMU*/
-if (process.env.NODE_ENV !== 'production')
-  app.use(require('morgan')('dev'));
+if (process.env.NODE_ENV !== 'production') {
+  morgan.token('response-time', function (req, res) {
+  if (!req._startAt || !res._startAt) return
+
+  let sec = (res._startAt[0] - req._startAt[0]) * 1e3 +
+    (res._startAt[1] - req._startAt[1]) * 1e-6
+
+  return (sec / 1000).toFixed(3);
+});
+
+  morgan.token('res', function getResponseHeader (req, res, field) {
+    let newHeader = res.header()._headers;
+    if (field == 'content-length' && res.header()._headers['content-length'])
+      newHeader['content-length'] =
+      (Number(newHeader['content-length']) / 1024).toFixed(2) + ' Kilobytes';
+
+    if (!res.headersSent) return undefined;
+
+    let header = newHeader[field];
+    return Array.isArray(header)
+    ? header.join(', ')
+    : header
+  });
+
+app.use(morgan('dev'));
+}
 
 /*HTTP BODY'SININ JSON OLARAK BELIRLENMESI VE CEREZLERIN CEKILMESI*/
 app.use(parser.json());

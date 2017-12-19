@@ -1,10 +1,14 @@
 {
-    "dbIp":"mssql://SA:anaokulu_123@52.164.200.179/anaokulu",
+    "connectionAsIp":"mssql://SA:anaokulu_123@52.164.200.179/anaokulu",
     "connection":{
         "server"  : "52.164.200.179",
-        "userName": "SA",
+        "user": "SA",
         "password": "anaokulu_123",
-        "config.parseJSON": false,
-        "options": { "database": "anaokulu" }
-    }
+        "parseJSON":true,
+        "database": "anaokulu",
+        "options": {
+          "encrypt": false
+        }
+    },
+    "jsonKey":"JSON_F52E2B61-18A1-11d1-B105-00805F49916B"
 }

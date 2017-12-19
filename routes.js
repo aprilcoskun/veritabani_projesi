@@ -3,20 +3,25 @@ const router = express.Router();
 const sql = require('mssql');
 const login = require('./functions/login');
 const addStudent = require('./functions/addStudent');
+const addUser = require('./functions/addUser');
+const addStaff = require('./functions/addStaff');
 const listStudents = require('./functions/listStudents');
+const listBuses = require('./functions/listBuses');
+const listInventory = require('./functions/listInventory');
 
 router.get('/', async (req, res) => {
   try {
     const mainPageData = await sql.query`exec sp_anasayfa`;
-    const classes = await JSON.parse(first(mainPageData.recordsets[0][0]));
-    const staffs = await JSON.parse(first(mainPageData.recordsets[1][0]));
-    const schoolBuses = await JSON.parse(first(mainPageData.recordsets[2][0]));
-
+    const classes = mainPageData.recordsets[0][0];
+    const staffs = mainPageData.recordsets[1][0];
+    const schoolBuses = mainPageData.recordsets[2][0];
+    const users = mainPageData.recordsets[3][0];
     res.render('index', {
       Admin:req.cookies.username == 'admin',
       Classes:classes,
       Staffs:staffs,
       SchoolBuses:schoolBuses,
+      users:users,
       helpers: {
               ifEquals: function(arg1, arg2, options) {
                   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
@@ -41,6 +46,19 @@ router.post('/auth', async(req, res) => {
   .catch(err => console.error(err));
 });
 
+router.post('/user', (req, res) => {
+  addUser.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+router.post('/staff', (req, res) => {
+  addStaff.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+
 router.post('/student', (req, res) => {
   addStudent.attempt(req.body)
   .then(data => res.status(data.status).send())
@@ -53,8 +71,16 @@ router.get('/student/:class', (req, res) => {
   .catch(err => console.error(err))
 });
 
-function first(obj) {
-    for (let a in obj) return obj[a];
-}
+router.get('/bus', (req, res) => {
+  listBuses.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err))
+});
+
+router.get('/inventory', (req, res) => {
+  listInventory.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err))
+});
 
 module.exports = router;
