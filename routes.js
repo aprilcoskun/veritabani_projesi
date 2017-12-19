@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
 const login = require('./functions/login');
+const addBus = require('./functions/addBus');
 const addStudent = require('./functions/addStudent');
 const addUser = require('./functions/addUser');
 const addStaff = require('./functions/addStaff');
+const addStuff = require('./functions/addStuff');
+
 const listStudents = require('./functions/listStudents');
 const listBuses = require('./functions/listBuses');
 const listInventory = require('./functions/listInventory');
@@ -58,9 +61,21 @@ router.post('/staff', (req, res) => {
   .catch(err => console.error(err));
 });
 
+router.post('/inventory', (req, res) => {
+  addStuff.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
 
 router.post('/student', (req, res) => {
   addStudent.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+router.post('/bus', (req, res) => {
+  addBus.attempt(req.body)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });

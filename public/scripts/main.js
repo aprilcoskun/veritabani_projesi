@@ -435,6 +435,79 @@ function addStaff() {
   .catch(err => console.error(err))
 }
 
+function addStuff() {
+  let stuff = {
+    name: document.getElementById('stuffName').value,
+    price: document.getElementById('stuffPrice').value,
+    number: document.getElementById('stuffNum').value,
+    compName: document.getElementById('stuffCompName').value,
+    compPhone: document.getElementById('stuffCompPhone').value,
+    staffTC: document.getElementById('stuffStaff').value,
+  };
+  return fetch('/inventory', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(stuff)
+  })
+  .then(response => {
+    $('#addStuff').modal('hide');
+    if(response.status < 400) {
+      $.notify({
+        message: `${stuff.name} kaydedildi.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `${stuff.name} kaydedilemedi! HATA:(${response.status})`
+      },{
+        type: 'danger'
+      });
+    }
+  })
+  .catch(err => console.error(err))
+}
+
+function addBus() {
+  let bus = {
+    name: document.getElementById('busName').value,
+    surname: document.getElementById('busSurname').value,
+    phone: document.getElementById('busPhone').value,
+    path: document.getElementById('busPath').value,
+    plate: document.getElementById('busPlate').value,
+  };
+  return fetch('/bus', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(bus)
+  })
+  .then(response => {
+    $('#addBus').modal('hide');
+    if(response.status < 400) {
+      $.notify({
+        message: `${bus.path} kaydedildi.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `${bus.path} kaydedilemedi! HATA:(${response.status})`
+      },{
+        type: 'danger'
+      });
+    }
+  })
+  .catch(err => console.error(err))
+}
+
 /*PDF CIKTILARI*/
 function staffToPDF() {
     let staffs = document.getElementById('staffTable');

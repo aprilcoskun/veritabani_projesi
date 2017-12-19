@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const sql = require('mssql');
 
 exports.attempt = async (staff) => {
