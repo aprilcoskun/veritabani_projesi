@@ -24,6 +24,7 @@ let studentsCache = [];
 let busesCache = [];
 let inventoryCache = [];
 let usersCache = [];
+let staffCache = [];
 let studentList = document.getElementById('studentList');
 let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
@@ -88,7 +89,6 @@ function addStudent() {
   student.extraState = studentExtraState.value;
   student.extraPhysical = studentExtraPhysical.value;
   student.extraAllergic = studentExtraAllergic.value;
-  console.log(student);
   return fetch('/student', {
       method: 'POST',
       credentials: 'include',
@@ -190,8 +190,7 @@ function listStudents() {
 function studentAlert(i) {
   let student = studentsCache[i];
   swal({
-    title: 'Are you sure?',
-    text: `${student.ogr_ad} ${student.ogr_soyad}`,
+    title: `${student.ogr_ad} ${student.ogr_soyad}`,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     confirmButtonText: 'Düzenle',
@@ -200,12 +199,63 @@ function studentAlert(i) {
     if (result.value) {
       //Duzenle
     } else if (result.dismiss === 'cancel') {
-      //Silme
-    swal(
-      'Cancelled',
-      'Your imaginary file is safe :)',
-      'error'
-    )
+      return fetch(`/student/${student.ogr_tc}`, {
+          method: 'DELETE',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `${student.ogr_ad} adlı öğrenci silindi.`
+          },{
+            type: 'success'
+          });
+          listStudents();
+        } else {
+          $.notify({
+            message: `${student.ogr_ad} adlı öğrenci silinemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+  })
+}
+
+function stuffAlert(i) {
+  let stuff = inventoryCache[i];
+  swal({
+    title: `${stuff.urun_ad}`,
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Sil'
+  }).then((result) => {
+    if (result.value) {
+      //Duzenle
+    } else if (result.dismiss === 'cancel') {
+      return fetch(`/inventory/${stuff.urun_no}`, {
+          method: 'DELETE',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `${stuff.urun_ad} silindi.`
+          },{
+            type: 'success'
+          });
+          listInventory();
+        } else {
+          $.notify({
+            message: `${stuff.urun_ad} silinemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
   }
   })
 }
@@ -330,7 +380,7 @@ function listInventory() {
     for (let i in stuffs) {
       let stuff = stuffs[i];
         inventoryTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="stuffAlert('${i}')">
           <td>${stuff.urun_no}</td>
           <td>${stuff.urun_ad}</td>
           <td>${stuff.birim_fiyat}</td>
@@ -600,7 +650,7 @@ function studentsToPDF() {
       students,
       {
         margin:4,
-        filename:`${classToList.options[classToList.selectedIndex].value}.pdf`,
+        filename:`${classToList.value}.pdf`,
         html2canvas:{ dpi: 192 },
       }
     );
@@ -613,18 +663,7 @@ function logout() {
   location.reload();
 }
 
-$.fn.extend({
-    animateCss: function (animationName, callback) {
-        var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-        this.addClass('animated ' + animationName).one(animationEnd, function() {
-            $(this).removeClass('animated ' + animationName);
-            if (callback) {
-              callback();
-            }
-        });
-        return this;
-    }
-});
+
 
 function clearInputs() {
   let elements = document.getElementsByTagName('input');
@@ -633,4 +672,12 @@ function clearInputs() {
       elements[ii].value = "";
     }
   }
+}
+
+function Destroy(anim) {
+  let all = document.getElementsByTagName("*");
+  for (let i=0, max=all.length; i < max; i++) {
+    if (all[i].id)
+    $(`#${all[i].id}`).animateCss(anim);
+   }
 }

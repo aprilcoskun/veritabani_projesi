@@ -32,6 +32,7 @@ exports.attempt = async (student) => {
     return exec.returnValue == 1 ? {status:200} : {status:500};
   } catch (err) {
     console.error(err);
-    return {status:500};
+    return {status:err.status ? err.status : 500};
+
   }
 }

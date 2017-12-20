@@ -1,7 +1,7 @@
 <div class="container">
   <!--ANAMENU-->
-  <nav class="navbar navbar-default">
-        <ul class="nav navbar-nav">
+  <nav class="navbar navbar-default" id="navbar-root">
+        <ul class="nav navbar-nav" id="nav-list">
           <li><a data-toggle="tab" href="#students">Öğrenciler</a></li>
           {{#if Admin}}
           <li><a data-toggle="tab" href="#staff">Personeller</a></li>
@@ -122,6 +122,9 @@
 
     <!--Ayarlar-->
     <div id="settings" class="tab-pane fade">
+      <a class="btn btn-primary" href="javascript:Destroy('tada')">
+        Taa daa !
+      </a>
       <a class="btn btn-primary" href="javascript:logout()">
         <i class="fa fa-sign-out"></i> Çıkış Yap
       </a>

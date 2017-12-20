@@ -13,6 +13,7 @@ exports.attempt = async studentClass => {
     return query.recordset[0];
   } catch(err) {
     console.error(err);
-    return {status:500};
+    return {status:err.status ? err.status : 500};
+
   }
 }

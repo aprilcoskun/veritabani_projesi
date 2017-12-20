@@ -1,16 +1,25 @@
 const express = require('express');
 const router = express.Router();
 const sql = require('mssql');
-const login = require('./functions/login');
-const addBus = require('./functions/addBus');
-const addStudent = require('./functions/addStudent');
-const addUser = require('./functions/addUser');
-const addStaff = require('./functions/addStaff');
-const addStuff = require('./functions/addStuff');
 
-const listStudents = require('./functions/listStudents');
+const login = require('./functions/login');
+
+const addBus = require('./functions/addBus');
+const addStaff = require('./functions/addStaff');
+const addStudent = require('./functions/addStudent');
+const addStuff = require('./functions/addStuff');
+const addUser = require('./functions/addUser');
+
+const deleteBus = require('./functions/deleteBus');
+const deleteStaff = require('./functions/deleteStaff');
+const deleteStudent = require('./functions/deleteStudent');
+const deleteStuff = require('./functions/deleteStuff');
+
+
 const listBuses = require('./functions/listBuses');
 const listInventory = require('./functions/listInventory');
+const listStaffs = require('./functions/listStaffs');
+const listStudents = require('./functions/listStudents');
 const listUsers = require('./functions/listUsers');
 
 router.get('/', async (req, res) => {
@@ -89,6 +98,12 @@ router.get('/student/:class', (req, res) => {
   .catch(err => console.error(err));
 });
 
+router.post('/staff', (req, res) => {
+  listStaffs.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
 router.get('/bus', (req, res) => {
   listBuses.attempt()
   .then(data => res.status(200).json(data))
@@ -100,5 +115,18 @@ router.get('/inventory', (req, res) => {
   .then(data => res.status(200).json(data))
   .catch(err => console.error(err));
 });
+
+router.delete('/inventory/:no', (req, res) => {
+  deleteStuff.attempt(req.params.no)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+router.delete('/student/:tc', (req, res) => {
+  deleteStudent.attempt(req.params.tc)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
 
 module.exports = router;
