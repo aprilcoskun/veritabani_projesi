@@ -2,7 +2,6 @@ let studentTC = document.getElementById('studentTC');
 let studentName = document.getElementById('studentName');
 let studentSurname = document.getElementById('studentSurname');
 let studentBday = document.getElementById('studentBday');
-//cinsiyet?
 let studentAddress = document.getElementById('studentAddress');
 let studentSchoolBus = document.getElementById('studentSchoolBus');
 let studentClass = document.getElementById('studentClass');
@@ -24,9 +23,11 @@ let classToList = document.getElementById('classToList');
 let studentsCache = [];
 let busesCache = [];
 let inventoryCache = [];
+let usersCache = [];
 let studentList = document.getElementById('studentList');
 let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
+let _users = document.getElementById('users');
 
 let staffBday = document.getElementById('staffBday');
 
@@ -70,8 +71,8 @@ function addStudent() {
    '2-4' : '4-6';
   student.gender = document.getElementById('male').checked ? 'E' : 'K';
   student.address = studentAddress.value;
-  student.sClass = studentClass.options[studentClass.selectedIndex].value;
-  student.bus = studentSchoolBus.options[studentSchoolBus.selectedIndex].value == 'none' ?
+  student.sClass = studentClass.value;
+  student.bus = studentSchoolBus.value == 'none' ?
    null : studentSchoolBus.value;
   student.parentName = studentParentName.value;
   student.parentSurname = studentParentSurname.value;
@@ -79,7 +80,7 @@ function addStudent() {
   student.parentJob = studentParentJob.value;
   student.price = studentPrice.value;
   student.advancePayment = studentAdvancePayment.value;
-  student.payNum = studentPayNum.options[studentPayNum.selectedIndex].value;
+  student.payNum = studentPayNum.value;
   student.payUnitPrice = studentPayUnitPrice.value;
   student.extraName = studentExtraName.value;
   student.extraSurname = studentExtraSurname.value;
@@ -134,18 +135,18 @@ function listStudents() {
       if(student.ogr_durum == 'Aktif')
         studentTableContent += `
         <tr class="student" onclick="studentDetail('${i}')" ondblclick="studentAlert('${i}')">
+          <td class="class="col-md-2">${student.ogr_tc}</td>
           <td class="class="col-md-2">${student.ogr_ad}</td>
           <td class="class="col-md-2">${student.ogr_soyad}</td>
-          <td class="class="col-md-2">${student.ogr_tc}</td>
         </tr>`;
     }
     studentList.innerHTML = `
     <table class="table table-striped table-bordered table-hover" id="studentTable">
       <thead>
         <tr>
+          <th class="class="col-md-2">T.C</th>
           <th class="class="col-md-2">Ad</th>
           <th class="class="col-md-2">Soyad</th>
-          <th class="class="col-md-2">T.C</th>
         </tr>
     </thead>
       ${studentTableContent}
@@ -188,58 +189,75 @@ function listStudents() {
 
 function studentAlert(i) {
   let student = studentsCache[i];
-  console.log(student);
+  swal({
+    title: 'Are you sure?',
+    text: `${student.ogr_ad} ${student.ogr_soyad}`,
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Düzenle',
+    cancelButtonText: 'Sil'
+  }).then((result) => {
+    if (result.value) {
+      //Duzenle
+    } else if (result.dismiss === 'cancel') {
+      //Silme
+    swal(
+      'Cancelled',
+      'Your imaginary file is safe :)',
+      'error'
+    )
+  }
+  })
 }
 
 /*OGRENCI DETAY*/
 function studentDetail(i) {
-  $('#studentDetail').animateCss('zoomIn');
-  let studentDetail = document.getElementById('studentDetail');
+  $('#studentDetail').animateCss('flash');
 
   let student = studentsCache[i];
   let parent = student.ebeveyn[0];
   let extra = student.ebeveyn[0].ekbilgi[0];
-  studentDetail.innerHTML = `
-    <h4>Öğrenci Detayı</h4>
-    <label class="col-sm-4 control-label">Öğrenci Adı:</label>
+  document.getElementById('studentDetail').innerHTML = `
+    <h4 id="studentDetailH">Öğrenci Detayı</h4>
+    <label class="col-sm-6 control-label">Öğrenci Adı:</label>
     <p class="col-sm-6">${student.ogr_ad}</p>
-    <label class="col-sm-4 control-label">Öğrenci Soyadı:</label>
+    <label class="col-sm-6 control-label">Öğrenci Soyadı:</label>
     <p class="col-sm-6">${student.ogr_soyad}</p>
-    <label class="col-sm-4 control-label">Öğrenci T.C:</label>
+    <label class="col-sm-6 control-label">Öğrenci T.C:</label>
     <p class="col-sm-6">${student.ogr_tc}</p>
-    <label class="col-sm-4 control-label">Öğrenci Cinsiyeti:</label>
+    <label class="col-sm-6 control-label">Öğrenci Cinsiyeti:</label>
     <p class="col-sm-6">${student.ogr_cins == 'E' ? 'Erkek' : 'Kız'}</p>
-    <label class="col-sm-4 control-label">Öğrenci Adresi:</label>
+    <label class="col-sm-6 control-label">Öğrenci Adresi:</label>
     <p class="col-sm-6">${student.ogr_adres}</p>
-    <label class="col-sm-4 control-label">Öğrenci Doğum Tarihi:</label>
+    <label class="col-sm-6 control-label">Öğrenci Doğum Tarihi:</label>
     <p class="col-sm-6">${student.ogr_dog_tar}</p>
-    <label class="col-sm-4 control-label">Öğrenci Yaş Grubu:</label>
+    <label class="col-sm-6 control-label">Öğrenci Yaş Grubu:</label>
     <p class="col-sm-6">${student.ogr_yas_grup}</p>
-    <label class="col-sm-4 control-label">Öğrenci Kayıt Tarihi:</label>
+    <label class="col-sm-6 control-label">Öğrenci Kayıt Tarihi:</label>
     <p class="col-sm-6">${student.ogr_adres}</p>
-    <label class="col-sm-4 control-label">Veli Adı:</label>
+    <label class="col-sm-6 control-label">Veli Adı:</label>
     <p class="col-sm-6">${parent.veli_ad}</p>
-    <label class="col-sm-4 control-label">Veli Soyadı:</label>
+    <label class="col-sm-6 control-label">Veli Soyadı:</label>
     <p class="col-sm-6">${parent.veli_soyad}</p>
-    <label class="col-sm-4 control-label">Veli Telefonu:</label>
+    <label class="col-sm-6 control-label">Veli Telefonu:</label>
     <p class="col-sm-6">${parent.veli_tel}</p>
-    <label class="col-sm-4 control-label">Veli Mesleği:</label>
+    <label class="col-sm-6 control-label">Veli Mesleği:</label>
     <p class="col-sm-6">${parent.veli_meslek}</p>
-    <label class="col-sm-4 control-label">Öğrencinin Servisi:</label>
+    <label class="col-sm-6 control-label">Öğrencinin Servisi:</label>
     <p class="col-sm-6">${student.plaka ? student.plaka : 'Servis Kullanmıyor'}</p>
-    <label class="col-sm-4 control-label">Ek Ad:</label>
+    <label class="col-sm-6 control-label">Ek Ad:</label>
     <p class="col-sm-6">${extra.ek_ad}</p>
-    <label class="col-sm-4 control-label">Ek Soyad:</label>
+    <label class="col-sm-6 control-label">Ek Soyad:</label>
     <p class="col-sm-6">${extra.ek_soyad}</p>
-    <label class="col-sm-4 control-label">Ek Açıklama:</label>
+    <label class="col-sm-6 control-label">Ek Açıklama:</label>
     <p class="col-sm-6">${extra.ek_aciklama}</p>
-    <label class="col-sm-4 control-label">Ek Tel:</label>
+    <label class="col-sm-6 control-label">Ek Tel:</label>
     <p class="col-sm-6">${extra.ek_tel}</p>
-    <label class="col-sm-4 control-label">Ek Beden Durum:</label>
+    <label class="col-sm-6 control-label">Ek Beden Durum:</label>
     <p class="col-sm-6">${extra.ek_beden_durum}</p>
-    <label class="col-sm-4 control-label">Ek Alerji:</label>
+    <label class="col-sm-6 control-label">Ek Alerji:</label>
     <p class="col-sm-6">${extra.ek_alerji}</p>`;
-}
+  }
 
 function listSchoolBuses() {
   let first = true;
@@ -354,6 +372,58 @@ function listInventory() {
       $('#inventoryTable').animateCss('flipInX');
     } else {
       $('#inventoryTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function listUsers() {
+  let first = true;
+  if($('#usersTable')[0]) {
+    first = false;
+    $('#usersTable').animateCss('flipOutX', function(){
+      $("#usersTable").css('opacity', '0');
+    });
+  }
+
+  let usersTableContent = ``;
+  fetch(`/user`,{credentials: 'include'})
+  .then(response => response.json()).then(users => {
+    usersCache = users;
+    for (let i in users) {
+      let user = users[i];
+        usersTableContent += `
+        <tr class="staff">
+          <td>${user.personel[0].per_ad} ${user.personel[0].per_soyad}</td>
+          <td>${user.kullanici_adi}</td>
+          <td>${user.kullanici_sifre}</td>
+        </tr>`;
+    }
+
+    _users.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listUsers()">Kullanıcıları Listele</a>
+      <button class="btn btn-primary" data-toggle="modal" data-target="#addUser">
+        <i class="fa fa-user-plus" aria-hidden="true"></i> Kullanıcı Kayıt
+      </button>
+    </div>
+    <table class="table table-bordered table-hover table-striped" id="usersTable">
+      <thead>
+        <tr>
+          <th>Personel</th>
+          <th>Kullanıcı Adı</th>
+          <th>Hash'lenmiş şifre</th>
+        </tr>
+      </thead>
+      ${usersTableContent}
+    </table>`;
+
+    if(!first) {
+      $("#usersTable").css('opacity', '1');
+      $('#usersTable').animateCss('flipInX');
+    } else {
+      $('#usersTable').animateCss('zoomIn');
     }
 
   })

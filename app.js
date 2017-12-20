@@ -42,7 +42,7 @@ if (process.env.NODE_ENV !== 'production') {
     let newHeader = res.header()._headers;
     if (field == 'content-length' && res.header()._headers['content-length'])
       newHeader['content-length'] =
-      (Number(newHeader['content-length']) / 1024).toFixed(2) + ' Kilobytes';
+      (Number(newHeader['content-length']) / 1024).toFixed(2) + 'kb';
 
     if (!res.headersSent) return undefined;
 
