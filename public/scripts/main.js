@@ -46,12 +46,10 @@ staffBday.setAttribute(
 
 /*Birim Taksit Hesabi*/
 function calUnitPrice() {
-  /*max 5 hane kontrolu*/
   if (studentPrice.value.length > 5)
       studentPrice.value = studentPrice.value.slice(0,5);
   if (studentAdvancePayment.value.length > 5)
       studentAdvancePayment.value = studentAdvancePayment.value.slice(0,5);
-  /*Hesap*/
   let price = parseInt(studentPrice.value);
   let advancePayment = parseInt(studentAdvancePayment.value);
   let unitSize = parseInt(studentPayNum.value);
@@ -187,6 +185,7 @@ function listStudents() {
   .catch(err => console.error(err));
 }
 
+/*Ogrenci'ye cift tiklayinca cikan alert*/
 function studentAlert(i) {
   let student = studentsCache[i];
   swal({
@@ -224,6 +223,7 @@ function studentAlert(i) {
   })
 }
 
+/*Envantere cift tiklayinca cikan alert*/
 function stuffAlert(i) {
   let stuff = inventoryCache[i];
   swal({
@@ -309,6 +309,7 @@ function studentDetail(i) {
     <p class="col-sm-6">${extra.ek_alerji}</p>`;
   }
 
+/*Servisleri listeleme*/
 function listSchoolBuses() {
   let first = true;
   if($('#busesTable')[0]) {
@@ -364,6 +365,7 @@ function listSchoolBuses() {
   .catch(err => console.error(err));
 }
 
+/*Envanteri listeleme*/
 function listInventory() {
   let first = true;
   if($('#inventoryTable')[0]) {
@@ -428,6 +430,7 @@ function listInventory() {
   .catch(err => console.error(err));
 }
 
+/*Kullanıcıları listeleme*/
 function listUsers() {
   let first = true;
   if($('#usersTable')[0]) {
@@ -480,6 +483,7 @@ function listUsers() {
   .catch(err => console.error(err));
 }
 
+/*Kullanıcı ekleme*/
 function addUser() {
   let user = {
     username: document.getElementById('userName').value,
@@ -514,7 +518,7 @@ function addUser() {
   .catch(err => console.error(err))
 }
 
-
+/*Personel ekleme*/
 function addStaff() {
   let staff = {
     tc: document.getElementById('staffTC').value,
@@ -555,6 +559,7 @@ function addStaff() {
   .catch(err => console.error(err))
 }
 
+/*Esya ekleme*/
 function addStuff() {
   let stuff = {
     name: document.getElementById('stuffName').value,
@@ -592,6 +597,7 @@ function addStuff() {
   .catch(err => console.error(err))
 }
 
+/*Servis ekleme*/
 function addBus() {
   let bus = {
     name: document.getElementById('busName').value,
@@ -664,7 +670,7 @@ function logout() {
 }
 
 
-
+/*Kayit sonrasi inputlari temizleme*/
 function clearInputs() {
   let elements = document.getElementsByTagName('input');
   for (let ii=0; ii < elements.length; ii++) {
@@ -674,6 +680,7 @@ function clearInputs() {
   }
 }
 
+/*Animasyon????*/
 function Destroy(anim) {
   let all = document.getElementsByTagName("*");
   for (let i=0, max=all.length; i < max; i++) {

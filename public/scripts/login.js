@@ -1,17 +1,27 @@
+/*Hatayi gizle eger acik kaldiysa*/
 hideErr();
-let signinForm = document.getElementById('signin-form');
-let usernameArea = document.getElementById('username');
-let passArea  = document.getElementById('password');
-/*Submit yapinca*/
-signinForm.onsubmit = e => {
-  e.preventDefault();
-  attemptLogin({ username: usernameArea.value, pass: passArea.value });
+
+/*HTML'den formu bulup formu gonderme eventini yakala*/
+document.getElementById('signin-form').onsubmit = event => {
+  /*normal form olarak calismasini engele*/
+  event.preventDefault();
+  /*
+  Login olmayi dene
+  (parametre olarak yollanan nesnede html'den alinmis kullanici adi ve sifre degerleri var)
+  */
+  attemptLogin({
+     username: document.getElementById('username').value,
+     pass: document.getElementById('password').value
+   });
 }
 
 /*Giris Yapmayi Dene*/
-function attemptLogin(data) {
+ function attemptLogin(data) {
+  /*Animasyon*/
   document.getElementById('wrapper').className = 'wrapper animated fadeOutRightBig';
+  /*Hata gizle eger acik kaldiysa*/
   hideErr();
+  /*Api'ye istek yolla*/
   return fetch('/auth', {
       method: 'POST',
       credentials: 'include',
@@ -21,22 +31,26 @@ function attemptLogin(data) {
       },
       body: JSON.stringify({username:data.username, password:data.pass})
   })
-  .then(response => {
+  .then(async (response) => {
+    /*Gelen cevabi kontrol et(eger hatali islem yapildi ise http kodu 400'un ustundedir)*/
     if(400 <= response.status) throw response.status;
-    else return response.json();
-  })
-  .then(data => {
+    else {
+      data = await response.json(); //Burada async/await kullandik cunku eger apiden cevap gelmeden bu islem yapilirsa bos degere esitler ve buyuk sicariz
       document.cookie = 'username=' + data.username + ';'
       window.location.href = '/';
+    }
   })
-  .catch(err => showErr(err));
+  .catch(err => showErr(err));/*Bu islemlerde hata olursa yakala ve hatayi goster*/
 }
 
+/*Hatayi Gosterme Fonksiyonu*/
 function showErr(code) {
+  /*Animasyon*/
   document.getElementById('wrapper').className = 'wrapper animated fadeInRightBig';
 
+  /*HTML'deki hata div'ini bul*/
   let errAlert = document.getElementById('err');
-
+  /*Hata koduna gore farkli hatayi yazdir(innerHTML ile div'in icine)*/
   if (code === 401)
     errAlert.innerHTML = '<a href="javascript:hideErr()" class="close" aria-label="close">&tim'+
       'es;</a><strong>Error!</strong> Yanlış Şifre!'+
@@ -54,10 +68,12 @@ function showErr(code) {
   else
     errAlert.innerHTML = '<a href="javascript:hideErr()" class="close" aria-label="close">&tim'+
       'es;</a><strong>Unknown Error!</strong> ' + code
-
+  /*hata div'ini gorunur yap(css ile)*/
   errAlert.style.visibility = 'visible'
 }
 
+/*Hata gizleme Fonksiyonu*/
 function hideErr() {
+  /*HTML'den hata div'ini bulup gorunmez yap(css ile)*/
   document.getElementById('err').style.visibility = 'hidden'
 }

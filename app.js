@@ -60,7 +60,7 @@ app.use(parser.json());
 app.use(parser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-//Auth Middleware
+//Auth Middleware (Her Api isteginden once kullanici yetkisi kontrolu)
 app.all('*',(req,res, next) => {
   let username = req.cookies.username;
   if(req.url === '/auth') {

@@ -1,7 +1,8 @@
-const express = require('express');
-const router = express.Router();
+/*KUTUPHANELER*/
+const router = require('express').Router();
 const sql = require('mssql');
 
+/*FONKSIYONLAR*/
 const login = require('./functions/login');
 
 const addBus = require('./functions/addBus');
@@ -14,7 +15,7 @@ const deleteBus = require('./functions/deleteBus');
 const deleteStaff = require('./functions/deleteStaff');
 const deleteStudent = require('./functions/deleteStudent');
 const deleteStuff = require('./functions/deleteStuff');
-
+const deleteUser = require('./functions/deleteUser');
 
 const listBuses = require('./functions/listBuses');
 const listInventory = require('./functions/listInventory');
@@ -22,6 +23,7 @@ const listStaffs = require('./functions/listStaffs');
 const listStudents = require('./functions/listStudents');
 const listUsers = require('./functions/listUsers');
 
+/*Anasayfayi getirme*/
 router.get('/', async (req, res) => {
   try {
     const mainPageData = await sql.query`exec sp_anasayfa`;
@@ -44,89 +46,106 @@ router.get('/', async (req, res) => {
   }
 });
 
+/*API ISTEKLERINI YONLENDIRME*/
+
+/*Login Sayfasini getirme*/
 router.get('/auth', async(req, res) => {
   res.render('login');
 });
 
+/*Login islemi*/
 router.post('/auth', async(req, res) => {
   login.attempt(req.body.username,req.body.password)
   .then(data => res.status(data.status).json({username:req.body.username}))
   .catch(err => console.error(err));
 });
 
+/*Kullanicilari getirme*/
 router.get('/user', async(req, res) => {
   listUsers.attempt()
   .then(data => res.status(200).json(data))
   .catch(err => console.error(err));
 });
 
-
+/*Kullanici ekleme*/
 router.post('/user', (req, res) => {
   addUser.attempt(req.body)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });
 
+/*Personelleri listeleme*/
+router.get('/staff', (req, res) => {
+  listStaffs.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Personel ekleme*/
 router.post('/staff', (req, res) => {
   addStaff.attempt(req.body)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });
 
-router.post('/inventory', (req, res) => {
-  addStuff.attempt(req.body)
-  .then(data => res.status(data.status).send())
-  .catch(err => console.error(err));
-});
+// TODO: Personel sil
 
-
-router.post('/student', (req, res) => {
-  addStudent.attempt(req.body)
-  .then(data => res.status(data.status).send())
-  .catch(err => console.error(err));
-});
-
-router.post('/bus', (req, res) => {
-  addBus.attempt(req.body)
-  .then(data => res.status(data.status).send())
-  .catch(err => console.error(err));
-});
-
-router.get('/student/:class', (req, res) => {
-  listStudents.attempt(req.params.class)
-  .then(data => res.status(200).json(data))
-  .catch(err => console.error(err));
-});
-
-router.post('/staff', (req, res) => {
-  listStaffs.attempt()
-  .then(data => res.status(200).json(data))
-  .catch(err => console.error(err));
-});
-
-router.get('/bus', (req, res) => {
-  listBuses.attempt()
-  .then(data => res.status(200).json(data))
-  .catch(err => console.error(err));
-});
-
+/*Envanteri listeleme*/
 router.get('/inventory', (req, res) => {
   listInventory.attempt()
   .then(data => res.status(200).json(data))
   .catch(err => console.error(err));
 });
 
+/*Esya ekleme*/
+router.post('/inventory', (req, res) => {
+  addStuff.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+/*Esya silme*/
 router.delete('/inventory/:no', (req, res) => {
   deleteStuff.attempt(req.params.no)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });
 
+/*Sinifa gore ogrencileri listele*/
+router.get('/student/:class', (req, res) => {
+  listStudents.attempt(req.params.class)
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Ogrenci ekleme*/
+router.post('/student', (req, res) => {
+  addStudent.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+/*Ogrenci silme*/
 router.delete('/student/:tc', (req, res) => {
   deleteStudent.attempt(req.params.tc)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });
 
+/*Servisleri listeleme*/
+router.get('/bus', (req, res) => {
+  listBuses.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Servis ekleme*/
+router.post('/bus', (req, res) => {
+  addBus.attempt(req.body)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
+// TODO: Servis sil
 
 module.exports = router;
