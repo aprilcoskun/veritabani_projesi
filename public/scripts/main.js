@@ -29,6 +29,7 @@ let studentList = document.getElementById('studentList');
 let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
 let _users = document.getElementById('users');
+let _staffs = document.getElementById('staff')
 
 let staffBday = document.getElementById('staffBday');
 
@@ -260,6 +261,43 @@ function stuffAlert(i) {
   })
 }
 
+/*Personele cift tiklayinca cikan alert*/
+function staffAlert(i) {
+  let staff = staffCache[i];
+  swal({
+    title: `${staff.per_ad} ${staff.per_soyad}`,
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Sil'
+  }).then((result) => {
+    if (result.value) {
+      //Duzenle
+    } else if (result.dismiss === 'cancel') {
+      return fetch(`/staff/${staff.per_tc}`, {
+          method: 'DELETE',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `${staff.per_ad} silindi.`
+          },{
+            type: 'success'
+          });
+          listStaffs();
+        } else {
+          $.notify({
+            message: `${staff.per_ad} silinemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+  })
+}
+
 /*OGRENCI DETAY*/
 function studentDetail(i) {
   $('#studentDetail').animateCss('flash');
@@ -426,6 +464,81 @@ function listInventory() {
       $('#inventoryTable').animateCss('zoomIn');
     }
 
+  })
+  .catch(err => console.error(err));
+}
+
+/*Personelleri listeleme*/
+function listStaffs() {
+  $('#staffTable').animateCss('flipOutX', function(){
+    $("#staffTable").css('opacity', '0');
+  });
+
+  let staffTableContent = ``;
+  fetch(`/staff`,{credentials: 'include'})
+  .then(response => response.json()).then(staffs => {
+    staffCache = staffs;
+    for (let i in staffs) {
+      let staff = staffs[i];
+        staffTableContent += `
+        <tr class="staff" onclick="staffAlert('${i}')">
+          <td>${staff.per_tc}</td>
+          <td>${staff.per_ad}</td>
+          <td>${staff.per_soyad}</td>
+          <td>${staff.per_dog_tar}</td>
+          <td>${staff.per_tel}</td>
+          <td>${staff.per_maas}</td>
+          <td>${staff.per_gorev}</td>
+          <td>${staff.per_email}</td>
+          <td>${staff.per_sigorta_no}</td>
+        </tr>`;
+    }
+
+    _staffs.innerHTML = `
+      <div class="form-group" style="margin-top:12px;">
+        <a class="btn btn-primary" href="javascript:listStaffs()">Personelleri Listele</a>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#addStaff">
+          <i class="fa fa-user-plus"></i> Personel Kayıt
+        </button>
+      </div>
+      <table class="table table-bordered table-hover table-responsive table-striped" id="staffTable">
+        <thead>
+          <tr>
+            <th>T.C</th>
+            <th>Ad</th>
+            <th>Soyad</th>
+            <th>Doğum Tarihi</th>
+            <th>Telefon</th>
+            <th>Maaş</th>
+            <th>Görev</th>
+            <th>Eposta</th>
+            <th>Sigorta No.</th>
+          </tr>
+        </thead>
+        ${staffTableContent}
+      </table>
+      <div class="dropdown">
+        <button
+          class="btn btn-default dropdown-toggle"
+          type="button"
+          id="exportStaff"
+          data-toggle="dropdown"
+        >
+          Export
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a
+            download="Personeller.json"
+            href="data:text/json;charset=utf-8,${JSON.stringify(staffs)}">JSON</a></li>
+          <li><a href="javascript:staffToPDF()">PDF</a></li>
+          <li><a href="#"></a></li>
+        </ul>
+      </div>
+    `;
+
+    $("#staffTable").css('opacity', '1');
+    $('#staffTable').animateCss('flipInX');
   })
   .catch(err => console.error(err));
 }

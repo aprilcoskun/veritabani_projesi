@@ -26,7 +26,7 @@
             {{/each}}
           </select>
         </div>
-        <a class="btn btn-primary" href="javascript:listStudents()">Öğrenci Listele</a>
+        <a class="btn btn-primary" href="javascript:listStudents()">Öğrencileri Listele</a>
         <button class="btn btn-primary" data-toggle="modal" data-target="#addStudent">
         <i class="fa fa-user-plus"></i> Öğrenci Kayıt
         </button>
@@ -38,6 +38,7 @@
     {{#if Admin}}
     <div id="staff" class="tab-pane fade col-sm-12">
       <div class="form-group" style="margin-top:12px;">
+        <a class="btn btn-primary" href="javascript:listStaffs()">Personelleri Listele</a>
         <button class="btn btn-primary" data-toggle="modal" data-target="#addStaff">
           <i class="fa fa-user-plus"></i> Personel Kayıt
         </button>
@@ -558,3 +559,7 @@
   </div>
 </div>
 <script src="/scripts/main.js"></script>
+<script type="text/javascript">
+staffCache =  JSON.parse($('<br/>').html(`{{json Staffs}}`).text());
+
+</script>

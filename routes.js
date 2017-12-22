@@ -88,7 +88,11 @@ router.post('/staff', (req, res) => {
   .catch(err => console.error(err));
 });
 
-// TODO: Personel sil
+router.delete('/staff/:tc', (req, res) => {
+  deleteStaff.attempt(req.params.tc)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
 
 /*Envanteri listeleme*/
 router.get('/inventory', (req, res) => {
