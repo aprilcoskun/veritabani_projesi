@@ -1,3 +1,8 @@
+let studentsCache = [];
+let busesCache = [];
+let inventoryCache = [];
+let usersCache = [];
+let staffCache = [];
 let studentTC = document.getElementById('studentTC');
 let studentName = document.getElementById('studentName');
 let studentSurname = document.getElementById('studentSurname');
@@ -20,11 +25,6 @@ let studentExtraState = document.getElementById('studentExtraState');
 let studentExtraPhysical = document.getElementById('studentExtraPhysical');
 let studentExtraAllergic = document.getElementById('studentExtraAllergic');
 let classToList = document.getElementById('classToList');
-let studentsCache = [];
-let busesCache = [];
-let inventoryCache = [];
-let usersCache = [];
-let staffCache = [];
 let studentList = document.getElementById('studentList');
 let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
@@ -56,6 +56,10 @@ function calUnitPrice() {
   let unitSize = parseInt(studentPayNum.value);
   if(price && advancePayment && unitSize && price > advancePayment)
     studentPayUnitPrice.value = Math.round(((price - advancePayment)/unitSize) * 100) / 100;
+  else if (advancePayment == 0) {
+    studentPayUnitPrice.value = Math.round((price /unitSize) * 100) / 100;
+  }
+
   else
     studentPayUnitPrice.value = null;
 }
@@ -298,6 +302,80 @@ function staffAlert(i) {
   })
 }
 
+/*Kullanıcıya cift tiklayinca cikan alert*/
+function userAlert(i) {
+  let user = usersCache[i];
+  swal({
+    title: `${user.kullanici_adi}`,
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Sil'
+  }).then((result) => {
+    if (result.value) {
+      //Duzenle
+    } else if (result.dismiss === 'cancel') {
+      return fetch(`/user/${user.per_tc}`, {
+          method: 'DELETE',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `${user.kullanici_adi} silindi.`
+          },{
+            type: 'success'
+          });
+          listUsers();
+        } else {
+          $.notify({
+            message: `${user.kullanici_adi} silinemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+  })
+}
+
+/*Kullanıcıya cift tiklayinca cikan alert*/
+function busAlert(i) {
+  let bus = busesCache[i];
+  swal({
+    title: `${bus.guzergah}`,
+    showCancelButton: true,
+    cancelButtonColor: '#d33',
+    cancelButtonText: 'Sil'
+  }).then((result) => {
+    if (result.value) {
+      //Duzenle
+    } else if (result.dismiss === 'cancel') {
+      return fetch(`/bus/${bus.plaka}`, {
+          method: 'DELETE',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `${bus.guzergah} silindi.`
+          },{
+            type: 'success'
+          });
+          listBuses();
+        } else {
+          $.notify({
+            message: `${bus.guzergah} silinemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+  })
+}
+
 /*OGRENCI DETAY*/
 function studentDetail(i) {
   $('#studentDetail').animateCss('flash');
@@ -364,7 +442,7 @@ function listSchoolBuses() {
     for (let i in buses) {
       let bus = buses[i];
         busTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="busAlert('${i}')">
           <td>${bus.sofor_ad}</td>
           <td>${bus.sofor_soyad}</td>
           <td>${bus.ser_tel}</td>
@@ -560,7 +638,7 @@ function listUsers() {
     for (let i in users) {
       let user = users[i];
         usersTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="userAlert('${i}')">
           <td>${user.personel[0].per_ad} ${user.personel[0].per_soyad}</td>
           <td>${user.kullanici_adi}</td>
           <td>${user.kullanici_sifre}</td>
@@ -780,24 +858,4 @@ function studentsToPDF() {
 function logout() {
   document.cookie = 'username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   location.reload();
-}
-
-
-/*Kayit sonrasi inputlari temizleme*/
-function clearInputs() {
-  let elements = document.getElementsByTagName('input');
-  for (let ii=0; ii < elements.length; ii++) {
-    if (elements[ii].type == "text") {
-      elements[ii].value = "";
-    }
-  }
-}
-
-/*Animasyon????*/
-function Destroy(anim) {
-  let all = document.getElementsByTagName("*");
-  for (let i=0, max=all.length; i < max; i++) {
-    if (all[i].id)
-    $(`#${all[i].id}`).animateCss(anim);
-   }
 }

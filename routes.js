@@ -74,6 +74,13 @@ router.post('/user', (req, res) => {
   .catch(err => console.error(err));
 });
 
+/*Kullanici silme*/
+router.delete('/user/:tc', (req, res) => {
+  deleteUser.attempt(req.params.tc)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
+
 /*Personelleri listeleme*/
 router.get('/staff', (req, res) => {
   listStaffs.attempt()
@@ -88,6 +95,7 @@ router.post('/staff', (req, res) => {
   .catch(err => console.error(err));
 });
 
+/*Personel silme*/
 router.delete('/staff/:tc', (req, res) => {
   deleteStaff.attempt(req.params.tc)
   .then(data => res.status(data.status).send())
@@ -150,6 +158,11 @@ router.post('/bus', (req, res) => {
   .catch(err => console.error(err));
 });
 
-// TODO: Servis sil
+/*Servis silme*/
+router.delete('/bus/:plate', (req, res) => {
+  deleteBus.attempt(req.params.plate)
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
+});
 
 module.exports = router;

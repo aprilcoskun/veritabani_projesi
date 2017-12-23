@@ -1,10 +1,12 @@
 const sql = require('mssql');
 
 exports.attempt = async (student) => {
+  let now = new Date();
   let {tc, name, surname, bDay, ageGroup, gender, address,
   status, plate, sClass, parentName,
   parentPhone, parentJob, parentSurname, extraName, extraSurname,
-  extraPhone, extraState, extraPhysical, extraAllergic} = student;
+  extraPhone, extraState, extraPhysical, extraAllergic, price,
+  advancePayment, payNum, payUnitPrice} = student;
   const request = new sql.Request()
   .input('tc', tc)
   .input('ad', name)
@@ -29,7 +31,31 @@ exports.attempt = async (student) => {
   .input('alerji', extraAllergic);
   try {
     const exec = await request.execute('sp_ogrenci_kayit');
-    return exec.returnValue == 1 ? {status:200} : {status:500};
+    if(exec.returnValue != 1) return {status:500};
+    if (advancePayment > 0)
+      await sql.query`
+        insert into taksit
+          values(
+            ${tc},
+            ${new Date().toISOString().slice(0, 10).replace('T', ' ')},
+            ${advancePayment},
+            'Ödenmedi'
+          )`;
+
+    for (var i = 0; i < payNum; i++) {
+      let paymentDay = now;
+      paymentDay.setMonth(now.getMonth() + i + 1);
+      paymentDay = paymentDay.toISOString().slice(0, 10).replace('T', ' ');
+      await sql.query`
+        insert into taksit
+          values(
+            ${tc},
+            ${paymentDay},
+            ${payUnitPrice},
+            'Ödenmedi'
+          )`;
+    }
+
   } catch (err) {
     console.error(err);
     return {status:err.status ? err.status : 500};
