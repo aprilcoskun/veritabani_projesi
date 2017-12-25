@@ -15,6 +15,5 @@ exports.attempt = async (bus) => {
   } catch(err) {
     console.error(err);
     return {status:err.status ? err.status : 500};
-
   }
 }

@@ -29,7 +29,7 @@ let studentList = document.getElementById('studentList');
 let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
 let _users = document.getElementById('users');
-let _staffs = document.getElementById('staff')
+let _staffs = document.getElementById('staff');
 
 let staffBday = document.getElementById('staffBday');
 
@@ -548,9 +548,13 @@ function listInventory() {
 
 /*Personelleri listeleme*/
 function listStaffs() {
-  $('#staffTable').animateCss('flipOutX', function(){
-    $("#staffTable").css('opacity', '0');
-  });
+  let first = true;
+  if($('#staffTable')[0]) {
+    first = false;
+    $('#staffTable').animateCss('flipOutX', function(){
+      $("#staffTable").css('opacity', '0');
+    });
+  }
 
   let staffTableContent = ``;
   fetch(`/staff`,{credentials: 'include'})
@@ -615,8 +619,12 @@ function listStaffs() {
       </div>
     `;
 
-    $("#staffTable").css('opacity', '1');
-    $('#staffTable').animateCss('flipInX');
+    if(!first) {
+      $("#staffTable").css('opacity', '1');
+      $('#staffTable').animateCss('flipInX');
+    } else {
+      $('#staffTable').animateCss('zoomIn');
+    }
   })
   .catch(err => console.error(err));
 }

@@ -1,7 +1,6 @@
 const sql = require('mssql');
 
 exports.attempt = async (student) => {
-  let now = new Date();
   let {tc, name, surname, bDay, ageGroup, gender, address,
   status, plate, sClass, parentName,
   parentPhone, parentJob, parentSurname, extraName, extraSurname,
@@ -31,7 +30,7 @@ exports.attempt = async (student) => {
   .input('alerji', extraAllergic);
   try {
     const exec = await request.execute('sp_ogrenci_kayit');
-    if(exec.returnValue != 1) return {status:500};
+    if(exec.returnValue != 1) return {status: 500};
     if (advancePayment > 0)
       await sql.query`
         insert into taksit
@@ -39,12 +38,12 @@ exports.attempt = async (student) => {
             ${tc},
             ${new Date().toISOString().slice(0, 10).replace('T', ' ')},
             ${advancePayment},
-            'Ödenmedi'
+            'Ödendi'
           )`;
 
-    for (var i = 0; i < payNum; i++) {
-      let paymentDay = now;
-      paymentDay.setMonth(now.getMonth() + i + 1);
+    for (let i = 0; i < payNum; i++) {
+      let paymentDay = new Date();
+      paymentDay.setMonth(new Date().getMonth() + i + 1);
       paymentDay = paymentDay.toISOString().slice(0, 10).replace('T', ' ');
       await sql.query`
         insert into taksit
@@ -55,7 +54,7 @@ exports.attempt = async (student) => {
             'Ödenmedi'
           )`;
     }
-
+    return {status: 200};
   } catch (err) {
     console.error(err);
     return {status:err.status ? err.status : 500};

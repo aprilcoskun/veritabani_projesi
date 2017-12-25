@@ -43,52 +43,6 @@
           <i class="fa fa-user-plus"></i> Personel Kayıt
         </button>
       </div>
-      <table class="table table-bordered table-hover table-responsive table-striped" id="staffTable">
-        <thead>
-          <tr>
-            <th>T.C</th>
-            <th>Ad</th>
-            <th>Soyad</th>
-            <th>Doğum Tarihi</th>
-            <th>Telefon</th>
-            <th>Maaş</th>
-            <th>Görev</th>
-            <th>Eposta</th>
-            <th>Sigorta No.</th>
-          </tr>
-        </thead>
-        {{#each Staffs}}
-        <tr class="staff">
-          <td>{{this.per_tc}}</td>
-          <td>{{this.per_ad}}</td>
-          <td>{{this.per_soyad}}</td>
-          <td>{{this.per_dog_tar}}</td>
-          <td>{{this.per_tel}}</td>
-          <td>{{this.per_maas}}</td>
-          <td>{{this.per_gorev}}</td>
-          <td>{{this.per_email}}</td>
-          <td>{{this.per_sigorta_no}}</td>
-        </tr>
-        {{/each}}
-      </table>
-      <div class="dropdown">
-        <button
-          class="btn btn-default dropdown-toggle"
-          type="button"
-          id="exportStaff"
-          data-toggle="dropdown"
-        >
-          Export
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-          <li><a
-            download="Personeller.json"
-            href="data:text/json;charset=utf-8,{{json Staffs}}">JSON</a></li>
-          <li><a href="javascript:staffToPDF()">PDF</a></li>
-          <li><a href="#"></a></li>
-        </ul>
-      </div>
     </div>
     <div id="users" class="tab-pane fade col-sm-12">
       <div class="form-group" style="margin-top:12px;">
