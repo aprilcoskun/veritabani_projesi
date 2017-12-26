@@ -195,14 +195,13 @@ function studentAlert(i) {
   let student = studentsCache[i];
   swal({
     title: `${student.ogr_ad} ${student.ogr_soyad}`,
+    showConfirmButton: false,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     confirmButtonText: 'Düzenle',
     cancelButtonText: 'Sil'
   }).then((result) => {
-    if (result.value) {
-      //Duzenle
-    } else if (result.dismiss === 'cancel') {
+    if (result.dismiss === 'cancel') {
       return fetch(`/student/${student.ogr_tc}`, {
           method: 'DELETE',
           credentials: 'include',
@@ -233,13 +232,12 @@ function stuffAlert(i) {
   let stuff = inventoryCache[i];
   swal({
     title: `${stuff.urun_ad}`,
+    showConfirmButton: false,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     cancelButtonText: 'Sil'
   }).then((result) => {
-    if (result.value) {
-      //Duzenle
-    } else if (result.dismiss === 'cancel') {
+    if (result.dismiss === 'cancel') {
       return fetch(`/inventory/${stuff.urun_no}`, {
           method: 'DELETE',
           credentials: 'include',
@@ -270,13 +268,12 @@ function staffAlert(i) {
   let staff = staffCache[i];
   swal({
     title: `${staff.per_ad} ${staff.per_soyad}`,
+    showConfirmButton: false,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     cancelButtonText: 'Sil'
   }).then((result) => {
-    if (result.value) {
-      //Duzenle
-    } else if (result.dismiss === 'cancel') {
+    if (result.dismiss === 'cancel') {
       return fetch(`/staff/${staff.per_tc}`, {
           method: 'DELETE',
           credentials: 'include',
@@ -307,13 +304,12 @@ function userAlert(i) {
   let user = usersCache[i];
   swal({
     title: `${user.kullanici_adi}`,
+    showConfirmButton: false,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     cancelButtonText: 'Sil'
   }).then((result) => {
-    if (result.value) {
-      //Duzenle
-    } else if (result.dismiss === 'cancel') {
+    if (result.dismiss === 'cancel') {
       return fetch(`/user/${user.per_tc}`, {
           method: 'DELETE',
           credentials: 'include',
@@ -344,13 +340,12 @@ function busAlert(i) {
   let bus = busesCache[i];
   swal({
     title: `${bus.guzergah}`,
+    showConfirmButton: false,
     showCancelButton: true,
     cancelButtonColor: '#d33',
     cancelButtonText: 'Sil'
   }).then((result) => {
-    if (result.value) {
-      //Duzenle
-    } else if (result.dismiss === 'cancel') {
+    if (result.dismiss === 'cancel') {
       return fetch(`/bus/${bus.plaka}`, {
           method: 'DELETE',
           credentials: 'include',
