@@ -33,6 +33,53 @@ let _staffs = document.getElementById('staff');
 
 let staffBday = document.getElementById('staffBday');
 
+//function letters(e) {
+//     var k;
+//     document.all ? k = e.keyCode : k = e.which;
+//	 return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8);
+//}
+
+function karakterKontrol(olay){
+	var tusKodu;
+	if(window.event){ // IE
+		tusKodu = olay.keyCode
+	}else if(olay.which){ // Netscape/Firefox/Opera
+		tusKodu = olay.which;
+	}
+	//alert(tusKodu)
+	if(tusKodu == 8){ // backspace tuşuna da izin vermek istiyorsak
+		return true;
+	}
+	if ((tusKodu > 64 && tusKodu < 91) || (tusKodu > 96 && tusKodu < 123) || tusKodu == 32)
+  {
+	    return true;
+	}
+	else{
+    tusKodu.keyCode = 0;
+    return  false;
+	}
+}
+
+function rakamKontrol(olay){
+	var tusKodu;
+	if(window.event){ // IE
+		tusKodu = olay.keyCode
+	}else if(olay.which){ // Netscape/Firefox/Opera
+		tusKodu = olay.which;
+	}
+	//alert(tusKodu)
+	if(tusKodu == 8){ // backspace tuşuna da izin vermek istiyorsak
+		return true;
+	}
+	if (tusKodu < 48 || tusKodu > 57){
+	    tusKodu.keyCode = 0;
+	    return  false;
+	}
+	else{
+	    return true;
+	}
+}
+
 /*DOGUM TARIHI SINIRLARI*/
 
 let minDate = new Date(new Date().setFullYear(new Date().getFullYear() - 6)).toJSON().split('T')[0];

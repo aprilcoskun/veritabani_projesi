@@ -35,8 +35,6 @@ CREATE TABLE giris
 per_tc varchar(11) Foreign Key References personel(per_tc) ,
 kullanici_adi varchar(30) UNIQUE,
 kullanici_sifre varchar(64)
-	constraint ck_kullanici__sifre
-	check(len(kullanici_sifre)>=5)
 )
 
 Create Table envanter

@@ -94,3 +94,10 @@ Create Proc geribil
 AS
 		Return 409
 Go
+
+Create Proc sp_taksit
+As
+	Select * From taksit where datepart(month,odeme_tar)<datepart(month,getdate()) and taksit_durum='Ödenmedi' for json path
+	Select * From taksit where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi' for json path
+	Select * From taksit where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi' for json path
+Go
