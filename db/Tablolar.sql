@@ -141,7 +141,7 @@ Create Table taksit
 (
 ogr_tc varchar(11) Foreign Key References ogrenci(ogr_tc) ,
 odeme_tar date,
-taksit_fiyat int,
+taksit_fiyat money,
 taksit_durum varchar(10)
 	constraint ck_taksit_durum
 	check(taksit_durum in ('�dendi','�denmedi')),

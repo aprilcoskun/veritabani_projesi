@@ -19,7 +19,7 @@ As
 				Begin
 				Delete From taksit Where ogr_tc=(Select ogr_tc From ogrenci where ogr_durum='Pasif')
 				End
-				
+
 		Delete From ebeveyn Where ogr_tc=(Select ogr_tc From ogrenci where ogr_durum='Pasif')
 		Delete From ogrenci Where ogr_durum='Pasif'
 	End
@@ -60,3 +60,4 @@ As
 			select @a = deleted.urun_no from deleted
 			insert into silinen_envanter(urun_no,urun_ad,birim_fiyat,adet,urun_kayit_tar,firma_ad,firma_tel,per_tc)
 			select urun_no,urun_ad,birim_fiyat,adet,urun_kayit_tar,firma_ad,firma_tel,per_tc From envanter where urun_no=@a
+			Delete From envanter where urun_no=@a

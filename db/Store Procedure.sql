@@ -11,19 +11,26 @@ Create Procedure sp_ogrenci_kayit
 	@durum varchar(5),@yasgrup varchar(3),@plaka varchar(9),@sinif varchar(15),@veli_ad varchar(15),
 	@veli_soyad varchar(15),@veli_tel varchar(10),@veli_meslek varchar(15),@ek_ad varchar(15),@ek_soyad varchar(15),
 	@ek_tel varchar(10),@aciklama varchar(50),@beden_durum varchar(50),@alerji varchar(25)
-As
-	IF(Select Count(*) From personel where per_tc = @tc)=0
-	Begin
-		Insert Into ogrenci Values(@tc,@ad,@soyad,@dogtar,@cins,@adres,@kayittar,@durum,@yasgrup,@plaka,@sinif)
-	End
-	Else
-	Begin
-		Return print('aaa')
-	End
-
-	Insert Into ebeveyn Values(@tc,@veli_ad,@veli_soyad,@veli_tel,@veli_meslek)
-	Insert Into ekbilgi Values(@tc,@ek_ad,@ek_soyad,@ek_tel,@aciklama,@beden_durum,@alerji)
-Go
+	As
+		IF(Select Count(*) From personel where per_tc = @tc)=0
+		Begin
+			Insert Into ogrenci Values(@tc,@ad,@soyad,@dogtar,@cins,@adres,@kayittar,@durum,@yasgrup,@plaka,@sinif)
+			IF(Select Count(*) From ogrenci where ogr_tc = @tc)>0
+			Begin
+				Insert Into ebeveyn Values(@tc,@veli_ad,@veli_soyad,@veli_tel,@veli_meslek)
+				Insert Into ekbilgi Values(@tc,@ek_ad,@ek_soyad,@ek_tel,@aciklama,@beden_durum,@alerji)
+			End
+			else
+			begin
+				return 2
+			end
+			Return 1
+		End
+		Else
+		Begin
+			Return 2
+		End
+	Go
 
 
 Create Procedure sp_ogrenci_guncelle
@@ -100,4 +107,32 @@ As
 	Select * From taksit where datepart(month,odeme_tar)<datepart(month,getdate()) and taksit_durum='Ödenmedi' for json path
 	Select * From taksit where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi' for json path
 	Select * From taksit where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi' for json path
+Go
+
+Create Proc sp_gecmis_taksit
+As
+	Select * From taksit inner join ogrenci
+	on ogrenci.ogr_tc=taksit.ogr_tc
+	where datepart(month,odeme_tar)>datepart(month,getdate()) for json auto
+Go
+
+Create Proc sp_gelecek_taksit
+As
+	Select * From taksit inner join ogrenci
+	on ogrenci.ogr_tc=taksit.ogr_tc
+	where datepart(month,odeme_tar)<datepart(month,getdate()) for json auto
+Go
+
+Create Proc sp_odenmemis_taksit
+As
+	Select * From taksit inner join ogrenci
+	on ogrenci.ogr_tc=taksit.ogr_tc
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi' for json auto
+Go
+
+Create Proc sp_odenmis_taksit
+	As
+	Select * From  taksit inner join ogrenci
+	on ogrenci.ogr_tc=taksit.ogr_tc
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi' for json auto
 Go
