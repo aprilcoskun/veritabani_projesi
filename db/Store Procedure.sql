@@ -113,26 +113,34 @@ Create Proc sp_gecmis_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)>datepart(month,getdate()) for json auto
+	where datepart(month,odeme_tar)>datepart(month,getdate())
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_gelecek_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)<datepart(month,getdate()) for json auto
+	where datepart(month,odeme_tar)<datepart(month,getdate())
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_odenmemis_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi' for json auto
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi'
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_odenmis_taksit
 	As
 	Select * From  taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi' for json auto
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi'
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
