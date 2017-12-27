@@ -35,7 +35,7 @@ document.getElementById('signin-form').onsubmit = event => {
     /*Gelen cevabi kontrol et(eger hatali islem yapildi ise http kodu 400'un ustundedir)*/
     if(400 <= response.status) throw response.status;
     else {
-      data = await response.json(); //Burada async/await kullandik cunku eger apiden cevap gelmeden bu islem yapilirsa bos degere esitler ve buyuk sicariz
+      data = await response.json(); //Burada async/await kullandik cunku eger apiden cevap gelmeden bu islem yapilirsa bos degere esitler ve buyuk patlar!
       document.cookie = 'username=' + data.username + ';'
       window.location.href = '/';
     }
