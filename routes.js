@@ -36,8 +36,7 @@ router.get('/', async (req, res) => {
   try {
     let paySum = 0;
     const mainPageData = await sql.query`exec sp_anasayfa`;
-    //const request = new sql.Request().input('yil', new Date().getFullYear())
-    //const _data = await request.execute('sp_taksit_toplam');
+    const _data = await sql.query`exec sp_taksit_toplam`;
 
     mainPageData.recordsets[1][0].forEach(per => {
       paySum += per.per_maas;
@@ -49,7 +48,7 @@ router.get('/', async (req, res) => {
       Staffs:mainPageData.recordsets[1][0],
       SchoolBuses:mainPageData.recordsets[2][0],
       StaffSum: paySum,
-      //_sum:_data.recordsets[0][0],
+      _sum:_data.recordsets[0][0],
       helpers: {
               ifEquals: function(arg1, arg2, options) {
                   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);

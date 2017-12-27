@@ -466,9 +466,13 @@ function studentDetail(i) {
     <label class="col-sm-6 control-label">Ek Açıklama:</label>
     <p class="col-sm-6">${extra.ek_aciklama}</p>
     <label class="col-sm-6 control-label">Ek Tel:</label>
-    <p class="col-sm-6">${extra.ek_tel}</p>
+    <p class="col-sm-6">${extra.ek_tel}</p>`;
+    if(extra.ek_beden_durum)
+    document.getElementById('studentDetail').innerHTML += `
     <label class="col-sm-6 control-label">Ek Beden Durum:</label>
-    <p class="col-sm-6">${extra.ek_beden_durum}</p>
+    <p class="col-sm-6">${extra.ek_beden_durum}</p>`;
+    if(extra.ek_alerji)
+    document.getElementById('studentDetail').innerHTML += `
     <label class="col-sm-6 control-label">Ek Alerji:</label>
     <p class="col-sm-6">${extra.ek_alerji}</p>`;
   }
