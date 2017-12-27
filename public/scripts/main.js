@@ -410,7 +410,7 @@ function busAlert(i) {
           },{
             type: 'success'
           });
-          listBuses();
+          listSchoolBuses();
         } else {
           $.notify({
             message: `${bus.guzergah} silinemedi! HATA:(${response.status})`
@@ -541,14 +541,19 @@ function listSchoolBuses() {
         <li><a href="javascript:busesToPDF()">PDF</a></li>
         <li><a href="#"></a></li>
       </ul>
-    </div>`;
+    </div>
+    <input id="upload" type="file" style="display:none" onchange="importBus()"/>
+    <a class="btn btn-default" href="" id="upload_link">import JSON</a>​`;
     if(!first) {
       $("#busesTable").css('opacity', '1');
       $('#busesTable').animateCss('flipInX');
     } else {
       $('#busesTable').animateCss('zoomIn');
     }
-
+    $("#upload_link").on('click', function(e){
+        e.preventDefault();
+        $("#upload:hidden").trigger('click');
+    });
   })
   .catch(err => console.error(err));
 }
@@ -1304,3 +1309,39 @@ let myChart = new Chart(ctx, {
     }
   }
 });
+
+function importBus() {
+  let file    = document.querySelector('input[type=file]').files[0];
+  let reader  = new FileReader();
+  reader.readAsText(file, "UTF-8");
+    reader.onload = (evt) => {
+        data = JSON.parse(evt.target.result);
+        return fetch('/importbus', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+          $('#addBus').modal('hide');
+          if(response.status < 400) {
+            $.notify({
+              message: `Veriler kaydedildi.`
+            },{
+              type: 'success'
+            });
+          } else {
+            $.notify({
+              message: `Veriler kaydedilemedi! HATA:(${response.status})`
+            },{
+              type: 'danger'
+            });
+          }
+        })
+        .catch(err => console.error(err))
+    }
+  console.log(FileReader.result);
+}

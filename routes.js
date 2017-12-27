@@ -5,7 +5,7 @@ const sql = require('mssql');
 /*FONKSIYONLAR*/
 const login = require('./functions/login');
 const pay = require('./functions/pay');
-
+const importBus = require('./functions/importBus');
 const addBus = require('./functions/addBus');
 const addStaff = require('./functions/addStaff');
 const addStudent = require('./functions/addStudent');
@@ -183,6 +183,12 @@ router.delete('/bus/:plate', (req, res) => {
   .catch(err => console.error(err));
 });
 
+/*Servis import*/
+router.post('/importbus', (req, res) => {
+    importBus.attempt(req.body)
+    .then(data => res.status(data.status).send())
+    .catch(err => console.error(err));
+});
 
 /*Eski taksitleri listeleme*/
 router.get('/oldpays', (req, res) => {
