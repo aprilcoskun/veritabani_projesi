@@ -46,7 +46,16 @@ function karakterKontrol(olay){
 	if(tusKodu == 8){ // backspace tuşuna da izin vermek istiyorsak
 		return true;
 	}
-	if ((tusKodu > 64 && tusKodu < 91) || (tusKodu > 96 && tusKodu < 123) || tusKodu == 32)
+	if ((tusKodu > 64 && tusKodu < 91)
+				|| (tusKodu > 96 && tusKodu < 123)
+				|| tusKodu == 32
+				|| tusKodu == 105
+				|| tusKodu == 305
+				|| tusKodu == 287
+				|| tusKodu == 252
+				|| tusKodu == 351
+				|| tusKodu == 246
+				|| tusKodu == 231)
   {
 	    return true;
 	}
