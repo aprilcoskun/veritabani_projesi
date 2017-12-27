@@ -213,18 +213,16 @@ router.get('/nextpays', (req, res) => {
 
 /*Yedek alma*/
 router.get('/getbackup', (req, res) => {
-  res.status(401).send()
-  // getBackup.attempt()
-  // .then(data => res.status(data.status).send())
-  // .catch(err => console.error(err));
+  getBackup.attempt()
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
 });
 
 /*Yedekten geri yükleme*/
 router.get('/restorebackup', (req, res) => {
-  res.status(401).send()
-  // restoreBackup.attempt()
-  // .then(data => res.status(data.status).send())
-  // .catch(err => console.error(err));
+  restoreBackup.attempt()
+  .then(data => res.status(data.status).send())
+  .catch(err => console.error(err));
 });
 
 module.exports = router;

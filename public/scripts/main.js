@@ -1151,7 +1151,7 @@ function getBackup() {
 }
 
 function restoreBackup() {
-  fetch(`/getbackup`,{credentials: 'include'})
+  fetch(`/restorebackup`,{credentials: 'include'})
   .then(response => {
     if(response.status < 400) {
       $.notify({

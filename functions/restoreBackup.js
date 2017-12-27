@@ -1,12 +1,14 @@
 const sql = require('mssql');
 
-exports.attempt = async () => {
-  try {
-    const query = await sql.query`exec sp_yedekden_geri_don`;
-//RESTORE DATABASE [anaokulu] FROM  DISK = N'/home/alp/a.bak' WITH  FILE = 1, REPLACE
-    return {status:200};
-  } catch(err) {
+exports.attempt = async () =>
+  new sql.ConnectionPool({
+    "server"  : "52.164.200.179",
+    "user": "SA",
+    "password": "anaokulu_123",
+    "database": "master",
+  }).connect().then(pool => {
+    return pool.query`exec sp_yedekten_geri_yukle`;
+  }).then(result => {return {status:200}}).catch(err => {
     console.error(err);
-    return {status:err.status ? err.status : 500};
-  }
-}
+    return {status:err.number ? err.number : 500};
+  });

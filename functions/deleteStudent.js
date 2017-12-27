@@ -9,6 +9,6 @@ exports.attempt = async (tc) => {
     return {status:200};
   } catch(err) {
     console.error(err);
-    return {status:err.status ? err.status : 500};
+    return {status:err.number ? err.number : 500};
   }
 }
