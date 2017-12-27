@@ -3,6 +3,7 @@ let busesCache = [];
 let inventoryCache = [];
 let usersCache = [];
 let staffCache = [];
+let paysCache = [];
 let studentTC = document.getElementById('studentTC');
 let studentName = document.getElementById('studentName');
 let studentSurname = document.getElementById('studentSurname');
@@ -944,7 +945,7 @@ function listOldPays() {
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="payAlert('${i}')">
           <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
           <td>${pay.taksit_fiyat}</td>
           <td>${pay.odeme_tar}</td>
@@ -997,7 +998,7 @@ function listPays() {
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="payAlert('${i}')">
           <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
           <td>${pay.taksit_fiyat}</td>
           <td>${pay.odeme_tar}</td>
@@ -1100,10 +1101,11 @@ function listNextPays() {
   let paysTableContent = ``;
   fetch(`/nextpays`,{credentials: 'include'})
   .then(response => response.json()).then(pays => {
+    paysCache = pays;
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
-        <tr class="staff">
+        <tr class="staff" onclick="payAlert('${i}')">
           <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
           <td>${pay.taksit_fiyat}</td>
           <td>${pay.odeme_tar}</td>
@@ -1138,6 +1140,40 @@ function listNextPays() {
     }
   })
   .catch(err => console.error(err));
+}
+
+function payAlert(i) {
+  let pay = paysCache[i];
+  swal({
+    title: `${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad} ${pay.odeme_tar}`,
+    showConfirmButton: true,
+    showCancelButton: false,
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Ödendi'
+  }).then((result) => {
+    if (result.value) {
+      return fetch(`/pay/${pay.ogrenci[0].ogr_tc}/${pay.odeme_tar}`, {
+          method: 'PATCH',
+          credentials: 'include',
+      })
+      .then(response => {
+        if(response.status < 400) {
+          $.notify({
+            message: `Ödendi.`
+          },{
+            type: 'success'
+          });
+        } else {
+          $.notify({
+            message: `Ödenemedi! HATA:(${response.status})`
+          },{
+            type: 'danger'
+          });
+        }
+      })
+      .catch(err => console.error(err));
+  }
+  })
 }
 
 function getBackup() {
