@@ -281,7 +281,7 @@
               <div class="form-group">
                 <label class="col-sm-2 control-label">Öğrenci Alerji Durumu</label>
                 <div class="col-sm-10">
-                  <textarea class="form-control" id="studentExtraAllergic" maxlength="25" rows="1"/></textarea>
+                  <textarea class="form-control" id="studentExtraAllergic" maxlength="25" rows="1" onkeypress="return karakterKontrol(event)"/></textarea>
                 </div>
               </div>
             </div>
@@ -308,19 +308,19 @@
             <div class="form-group">
               <label  class="col-sm-2 control-label">T.C. No</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="staffTC" maxlength="11"/>
+                <input type="text" class="form-control" id="staffTC" maxlength="11" onkeypress="return rakamKontrol(event)"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Ad</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="staffName" maxlength="15"/>
+                <input type="text" class="form-control" id="staffName" maxlength="15" onkeypress="return karakterKontrol(event)"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Soyad</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="staffSurname" maxlength="20"/>
+                <input type="text" class="form-control" id="staffSurname" maxlength="20" onkeypress="return karakterKontrol(event)"/>
               </div>
             </div>
             <div class="form-group">
@@ -332,7 +332,7 @@
             <div class="form-group">
               <label class="col-sm-2 control-label">Telefon</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="staffPhone">
+                <input type="text" class="form-control" id="staffPhone" maxlength="10" onkeypress="return rakamKontrol(event)" />
               </div>
             </div>
             <div class="form-group">
@@ -360,7 +360,7 @@
             <div class="form-group">
               <label class="col-sm-2 control-label">Sigorta No.</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="staffInsurance">
+                <input type="text" class="form-control" id="staffInsurance" maxlength="13" onkeypress="return rakamKontrol(event)">
               </div>
             </div>
           </form>
@@ -386,19 +386,19 @@
             <div class="form-group">
               <label class="col-sm-2 control-label">Şöför Adı</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="busName" maxlength="15"/>
+                <input type="text" class="form-control" id="busName" maxlength="15" onkeypress="return karakterKontrol(event)"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Şöför Soyadı</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="busSurname" maxlength="20"/>
+                <input type="text" class="form-control" id="busSurname" maxlength="20" onkeypress="return karakterKontrol(event)"/>
               </div>
             </div>
             <div class="form-group">
               <label class="col-sm-2 control-label">Şöför Telefonu</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="busPhone">
+                <input type="text" class="form-control" id="busPhone" maxlength="10"  onkeypress="return karakterKontrol(event)">
               </div>
             </div>
             <div class="form-group">
@@ -460,7 +460,7 @@
             <div class="form-group">
               <label class="col-sm-2 control-label">Firma Telefonu</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="stuffCompPhone">
+                <input type="text" class="form-control" id="stuffCompPhone" maxlength="10" onkeypress="return karakterKontrol(event)">
               </div>
             </div>
             <div class="form-group">
