@@ -1,15 +1,14 @@
 /*KUTUPHANELER*/
+const http = require('http');
+const path = require('path');
 const express = require('express');
 const exphbs = require('express-handlebars');
 const parser = require('body-parser');
-const path = require('path');
-const http = require('http');
-const config = require('./config/default.json');
-const routes = require('./routes');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+
 //SQL BAGLANTISI
-require('mssql').connect(config.connection);
+require('mssql').connect(require('./config/default.json'));
 
 /*GEREKLI DEGER ATAMALARI*/
 const PORT = 3000;
@@ -71,7 +70,7 @@ app.all('*',(req,res, next) => {
 });
 
 /*HTTP ISLEMLERININ YAPILDIGI ROUTER*/
-app.use('/', routes);
+app.use('/', require('./routes'));
 
 /*SERVER'IN 3000 PORTUNU DINLEMESI*/
 server.listen(PORT, async () => {

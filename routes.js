@@ -22,16 +22,33 @@ const listInventory = require('./functions/listInventory');
 const listStaffs = require('./functions/listStaffs');
 const listStudents = require('./functions/listStudents');
 const listUsers = require('./functions/listUsers');
+const listOldPays = require('./functions/listOldPays');
+const listPaid = require('./functions/listPaid');
+const listNotPaid = require('./functions/listNotPaid');
+const listNextPays = require('./functions/listNextPays');
+
+const getBackup = require('./functions/getBackup');
+const restoreBackup = require('./functions/restoreBackup');
 
 /*Anasayfayi getirme*/
 router.get('/', async (req, res) => {
   try {
+    let paySum = 0;
     const mainPageData = await sql.query`exec sp_anasayfa`;
+    const request = new sql.Request().input('yil', new Date().getFullYear())
+    const _data = await request.execute('sp_taksit_toplam');
+
+    mainPageData.recordsets[1][0].forEach(per => {
+      paySum += per.per_maas;
+    });
+
     res.render('index', {
       Admin:req.cookies.username == 'admin',
       Classes:mainPageData.recordsets[0][0],
       Staffs:mainPageData.recordsets[1][0],
       SchoolBuses:mainPageData.recordsets[2][0],
+      StaffSum: paySum,
+      _sum:_data.recordsets[0][0],
       helpers: {
               ifEquals: function(arg1, arg2, options) {
                   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
@@ -163,6 +180,51 @@ router.delete('/bus/:plate', (req, res) => {
   deleteBus.attempt(req.params.plate)
   .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
+});
+
+
+/*Eski taksitleri listeleme*/
+router.get('/oldpays', (req, res) => {
+  listOldPays.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Bu ayki odenen taksitleri listeleme*/
+router.get('/newpaid', (req, res) => {
+  listPaid.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Bu aki odenmemis taksitleri listeleme*/
+router.get('/newpays', (req, res) => {
+  listNotPaid.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Gelecek taksitleri listeleme*/
+router.get('/nextpays', (req, res) => {
+  listNextPays.attempt()
+  .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+/*Yedek alma*/
+router.get('/getbackup', (req, res) => {
+  res.status(401).send()
+  // getBackup.attempt()
+  // .then(data => res.status(data.status).send())
+  // .catch(err => console.error(err));
+});
+
+/*Yedekten geri yükleme*/
+router.get('/restorebackup', (req, res) => {
+  res.status(401).send()
+  // restoreBackup.attempt()
+  // .then(data => res.status(data.status).send())
+  // .catch(err => console.error(err));
 });
 
 module.exports = router;

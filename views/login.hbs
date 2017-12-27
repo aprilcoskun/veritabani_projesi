@@ -1,11 +1,11 @@
-<div class = "container">
-	<div id="wrapper" class="wrapper" style="text-align: center;">
+<div class="container">
+	<div id="wrapper" class="wrapper">
 		<form id="signin-form" name="Login_Form" class="form-signin" autocomplete="off">
 		    <h3 class="form-signin-heading">Hogwarts'a Hoşgeldiniz</h3>
 			  <hr>
 			  <input type="text" id="username" class="form-control" placeholder="Kullanıcı Adı" required autocomplete="off" autofocus/>
 			  <input type="password" id="password" class="form-control" placeholder="Şifre" required autocomplete="off"/>
-			  <button class="btn btn-lg btn-primary btn-block" name="Submit" type="Submit">Giriş</button><br/>
+        <button class="btn btn-lg btn-primary btn-block" name="Submit" type="Submit">Giriş</button><br/>
         <div id="err" class="alert alert-danger alert-dismissable fade in"></div>
 		</form>
 	</div>
@@ -15,6 +15,7 @@
     border:none !important;
   }
   .wrapper {
+    text-align: center;
     margin-top: 40px;
     margin-bottom: 20px;
   }
@@ -26,17 +27,6 @@
     box-shadow: 4px 4px 2px grey;
   }
   .form-signin-heading {
-    text-align:center;
-    margin-bottom: 30px;
-  }
-  .form-signup {
-    max-width: 420px;
-    padding: 30px 38px 66px;
-    margin: 0 auto;
-    background-color: #eee;
-    box-shadow: 4px 4px 2px grey;
-    }
-  .form-signup-heading {
     text-align:center;
     margin-bottom: 30px;
   }
@@ -57,6 +47,10 @@
   }
   hr{
     border-top: 1px solid #8c8b8b;
+  }
+
+  button {
+    margin: 0 !important;
   }
 </style>
 <script src="/scripts/login.js"></script>

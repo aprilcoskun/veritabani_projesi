@@ -30,14 +30,10 @@ let schoolBus = document.getElementById('schoolbus');
 let inventory = document.getElementById('inventory');
 let _users = document.getElementById('users');
 let _staffs = document.getElementById('staff');
-
+let _pays = document.getElementById('_budget');
+let ctx = document.getElementById("chart").getContext('2d');
 let staffBday = document.getElementById('staffBday');
-
-//function letters(e) {
-//     var k;
-//     document.all ? k = e.keyCode : k = e.which;
-//	 return ((k > 64 && k < 91) || (k > 96 && k < 123) || k == 8);
-//}
+let backup = false;
 
 function karakterKontrol(olay){
 	var tusKodu;
@@ -744,13 +740,13 @@ function addUser() {
     $('#addUser').modal('hide');
     if(response.status < 400) {
       $.notify({
-        message: `${user.username.value} kaydedildi.`
+        message: `${user.username} kaydedildi.`
       },{
         type: 'success'
       });
     } else {
       $.notify({
-        message: `${user.username.value} kaydedilemedi! HATA:(${response.status})`
+        message: `${user.username} kaydedilemedi! HATA:(${response.status})`
       },{
         type: 'danger'
       });
@@ -875,6 +871,256 @@ function addBus() {
   .catch(err => console.error(err))
 }
 
+/*Butce listelemeleri*/
+function listOldPays() {
+  let first = true;
+  if($('#paysTable')[0]) {
+    first = false;
+    $('#paysTable').animateCss('flipOutX', function(){
+      $("#paysTable").css('opacity', '0');
+    });
+  }
+
+  let paysTableContent = ``;
+  fetch(`/oldpays`,{credentials: 'include'})
+  .then(response => response.json()).then(pays => {
+    for (let i in pays) {
+      let pay = pays[i];
+        paysTableContent += `
+        <tr class="staff">
+          <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
+          <td>${pay.taksit_fiyat}</td>
+          <td>${pay.odeme_tar}</td>
+          <td>${pay.taksit_durum}</td>
+        </tr>`;
+    }
+
+    _pays.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listOldPays()">Ödeme Tarihi Geçmiş ve Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPays()">Bu Ayki Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPaid()">Bu Ayki Ödenen Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
+    </div>
+    <table class="table table-bordered table-hover table-striped" id="paysTable">
+      <thead>
+        <tr>
+          <th>Öğrenci</th>
+          <th>Tutar</th>
+          <th>Ödeme Tarihi</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      ${paysTableContent}
+    </table>`;
+
+    if(!first) {
+      $("#paysTable").css('opacity', '1');
+      $('#paysTable').animateCss('flipInX');
+    } else {
+      $('#paysTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function listPays() {
+  let first = true;
+  if($('#paysTable')[0]) {
+    first = false;
+    $('#paysTable').animateCss('flipOutX', function(){
+      $("#paysTable").css('opacity', '0');
+    });
+  }
+
+  let paysTableContent = ``;
+  fetch(`/newpays`,{credentials: 'include'})
+  .then(response => response.json()).then(pays => {
+    for (let i in pays) {
+      let pay = pays[i];
+        paysTableContent += `
+        <tr class="staff">
+          <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
+          <td>${pay.taksit_fiyat}</td>
+          <td>${pay.odeme_tar}</td>
+          <td>${pay.taksit_durum}</td>
+        </tr>`;
+    }
+
+    _pays.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listOldPays()">Ödeme Tarihi Geçmiş ve Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPays()">Bu Ayki Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPaid()">Bu Ayki Ödenen Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
+    </div>
+    <table class="table table-bordered table-hover table-striped" id="paysTable">
+      <thead>
+        <tr>
+          <th>Öğrenci</th>
+          <th>Tutar</th>
+          <th>Ödeme Tarihi</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      ${paysTableContent}
+    </table>`;
+
+    if(!first) {
+      $("#paysTable").css('opacity', '1');
+      $('#paysTable').animateCss('flipInX');
+    } else {
+      $('#paysTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function listPaid() {
+  let first = true;
+  if($('#paysTable')[0]) {
+    first = false;
+    $('#paysTable').animateCss('flipOutX', function(){
+      $("#paysTable").css('opacity', '0');
+    });
+  }
+
+  let paysTableContent = ``;
+  fetch(`/newpaid`,{credentials: 'include'})
+  .then(response => response.json()).then(pays => {
+    for (let i in pays) {
+      let pay = pays[i];
+        paysTableContent += `
+        <tr class="staff">
+          <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
+          <td>${pay.taksit_fiyat}</td>
+          <td>${pay.odeme_tar}</td>
+          <td>${pay.taksit_durum}</td>
+        </tr>`;
+    }
+
+    _pays.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listOldPays()">Ödeme Tarihi Geçmiş ve Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPays()">Bu Ayki Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPaid()">Bu Ayki Ödenen Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
+    </div>
+    <table class="table table-bordered table-hover table-striped" id="paysTable">
+      <thead>
+        <tr>
+          <th>Öğrenci</th>
+          <th>Tutar</th>
+          <th>Ödeme Tarihi</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      ${paysTableContent}
+    </table>`;
+
+    if(!first) {
+      $("#paysTable").css('opacity', '1');
+      $('#paysTable').animateCss('flipInX');
+    } else {
+      $('#paysTable').animateCss('zoomIn');
+    }
+
+  })
+  .catch(err => console.error(err));
+}
+
+function listNextPays() {
+  let first = true;
+  if($('#paysTable')[0]) {
+    first = false;
+    $('#paysTable').animateCss('flipOutX', function(){
+      $("#paysTable").css('opacity', '0');
+    });
+  }
+
+  let paysTableContent = ``;
+  fetch(`/nextpays`,{credentials: 'include'})
+  .then(response => response.json()).then(pays => {
+    for (let i in pays) {
+      let pay = pays[i];
+        paysTableContent += `
+        <tr class="staff">
+          <td>${pay.ogrenci[0].ogr_ad} ${pay.ogrenci[0].ogr_soyad}</td>
+          <td>${pay.taksit_fiyat}</td>
+          <td>${pay.odeme_tar}</td>
+          <td>${pay.taksit_durum}</td>
+        </tr>`;
+    }
+
+    _pays.innerHTML = `
+    <div class="form-group" style="margin-top:12px;">
+      <a class="btn btn-primary" href="javascript:listOldPays()">Ödeme Tarihi Geçmiş ve Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPays()">Bu Ayki Ödenmemiş Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listPaid()">Bu Ayki Ödenen Taksitleri Listele</a>
+      <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
+    </div>
+    <table class="table table-bordered table-hover table-striped" id="paysTable">
+      <thead>
+        <tr>
+          <th>Öğrenci</th>
+          <th>Tutar</th>
+          <th>Ödeme Tarihi</th>
+          <th>Durum</th>
+        </tr>
+      </thead>
+      ${paysTableContent}
+    </table>`;
+
+    if(!first) {
+      $("#paysTable").css('opacity', '1');
+      $('#paysTable').animateCss('flipInX');
+    } else {
+      $('#paysTable').animateCss('zoomIn');
+    }
+  })
+  .catch(err => console.error(err));
+}
+
+function getBackup() {
+  fetch(`/getbackup`,{credentials: 'include'})
+  .then(response => {
+    if(response.status < 400) {
+      $.notify({
+        message: `Yedek kaydedildi.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `Yedek kaydedilemedi.`
+      },{
+        type: 'danger'
+      });
+    }
+  });
+}
+
+function restoreBackup() {
+  fetch(`/getbackup`,{credentials: 'include'})
+  .then(response => {
+    if(response.status < 400) {
+      $.notify({
+        message: `Yedekden geri dönüldü.`
+      },{
+        type: 'success'
+      });
+    } else {
+      $.notify({
+        message: `Yedekden geri dönülemedi.`
+      },{
+        type: 'danger'
+      });
+    }
+  });
+}
+
 /*PDF CIKTILARI*/
 function staffToPDF() {
     let staffs = document.getElementById('staffTable');
@@ -909,3 +1155,31 @@ function logout() {
   document.cookie = 'username=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   location.reload();
 }
+
+let myChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+    datasets: [{
+        label: '# Giderler',
+        data: [_sum,_sum,_sum,_sum,_sum,_sum,_sum,_sum,_sum,_sum,_sum,_sum],
+        backgroundColor: 'rgba(211,47,47,.5)',
+        borderColor: 'rgba(211,47,47,.5)',
+        fill:false
+    },
+    {
+        label: '# Gelirler',
+        data: [55000,65000,76000,64000,59000,44000,37000,45000,58000,62000,64000,69000],
+        backgroundColor: 'rgba(67,160,71,.5)',
+        borderColor: 'rgba(67,160,71,.5)',
+        fill:false
+    }]
+  },
+  options: {
+    scales: {
+      yAxes: [{
+        ticks: { beginAtZero:true }
+      }]
+    }
+  }
+});

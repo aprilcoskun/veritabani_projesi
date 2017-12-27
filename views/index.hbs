@@ -63,7 +63,7 @@
       </div>
     </div>
     <!--Envanter-->
-    <div id="inventory" class="tab-pane fade">
+    <div id="inventory" class="tab-pane fade col-sm-12">
       <div class="form-group" style="margin-top:12px;">
         <a class="btn btn-primary" href="javascript:listInventory()">Envanteri Listele</a>
         <button class="btn btn-primary" data-toggle="modal" data-target="#addStuff">
@@ -72,17 +72,33 @@
       </div>
     </div>
     <!--Bütçe-->
-    <div id="budget" class="tab-pane fade">
+    <div id="budget" class="tab-pane fade col-sm-12">
+      <div class="chart-container" style="height:500px; width:860px;margin: 0px auto;">
+        <canvas id="chart"></canvas>
+      </div>
+      <div id="_budget">
+      <div class="form-group" style="margin-top:12px;">
+          <a class="btn btn-primary" href="javascript:listOldPays()">Gecikmiş Taksitleri Listele</a>
+          <a class="btn btn-primary" href="javascript:listPays()">Bu Ayki Ödenmemiş Taksitleri Listele</a>
+          <a class="btn btn-primary" href="javascript:listPaid()">Bu Ayki Ödenen Taksitleri Listele</a>
+          <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
+        </div>
+      </div>
+
     </div>
 
     <!--Ayarlar-->
-    <div id="settings" class="tab-pane fade">
-      <a class="btn btn-primary" href="javascript:Destroy('tada')">
-        Taa daa !
-      </a>
-      <a class="btn btn-primary" href="javascript:logout()">
-        <i class="fa fa-sign-out"></i> Çıkış Yap
-      </a>
+    <div id="settings" class="tab-pane fade col-sm-12">
+      <div class="form-group" style="margin-top:12px;">
+        {{#if Admin}}
+        <a class="btn btn-primary" href="javascript:getBackup()">Veritabanını Yedekle</a>
+        <a class="btn btn-primary" href="javascript:restoreBackup()">Yedekten Geri Yükle</a>
+        <a class="btn btn-primary" href="javascript:Destroy('tada')">Taa daa !</a>
+        {{/if}}
+        <a class="btn btn-primary" href="javascript:logout()">
+          <i class="fa fa-sign-out"></i> Çıkış Yap
+        </a>
+      </div>
     </div>
   </div>
 
@@ -512,8 +528,9 @@
     </div>
   </div>
 </div>
-<script src="/scripts/main.js"></script>
 <script type="text/javascript">
 staffCache =  JSON.parse($('<br/>').html(`{{json Staffs}}`).text());
-
+_sum = {{StaffSum}};
+_paymentHistory = JSON.parse($('<br/>').html(`{{json _sum}}`).text());
 </script>
+<script src="/scripts/main.js"></script>

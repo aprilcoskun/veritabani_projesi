@@ -6,6 +6,10 @@ body {
   font-family: 'Open Sans', sans-serif;
   font-size: 1.6rem;
   margin: 20px;
+  background-image: url("/bg.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center bottom;
 }
 nav.navbar {
   margin: 0 auto !important;
@@ -66,7 +70,7 @@ label {
 }
 
 .btn-primary {
-  margin-left: 6px !important;
+  margin-left: 6px;
 }
 
 .dropdown {

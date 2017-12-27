@@ -7,7 +7,6 @@ exports.attempt = async () => {
       from envanter
       inner join personel on envanter.per_tc = personel.per_tc
       for json auto`;
-      console.log(query);
     return query.recordset[0];
   } catch(err) {
     console.error(err);
