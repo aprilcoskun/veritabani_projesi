@@ -2,8 +2,7 @@ const sql = require('mssql');
 
 exports.attempt = async (buses) => {
   try {
-    console.log(buses);
-    buses.forEach(async (bus) => {
+    await buses.forEach(async (bus) => {
       const query = await sql.query`
         insert into servis
         values(
