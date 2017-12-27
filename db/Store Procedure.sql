@@ -153,10 +153,15 @@ From taksit
 where Year(odeme_tar)=@yil and taksit_durum='Ödendi' Group By MONTH(odeme_tar) for json auto
 
 
-Create PROC sp_yedekle
+
+Create Proc sp_yedekle
+As
+	BACKUP DATABASE [anaokulu]
+	TO DISK = N'/home/alp/anaokulu_yedek.bak'
+	WITH NOFORMAT, NOINIT, NAME = 'anaokulu_yedek', NOREWIND
+Go
+
+Create Proc sp_yedekten_geri_yukle
 AS
-DECLARE @Dosya varchar(200)
-SELECT @Dosya =N'/var/opt/mssql/data/anaokulu-' + REPLACE(convert(nvarchar(20),GetDate(),120),':','-') + '.bak'
-BACKUP  DATABASE  anaokulu
-TO DISK = @Dosya
-WITH NOFORMAT, NOINIT, NAME = 'anaokulu-full', SKIP, NOREWIND, NOUNLOAD
+	RESTORE DATABASE [anaokulu] FROM  DISK = N'/home/alp/anaokulu_yedek.bak' WITH  FILE = 1, REPLACE
+GO
