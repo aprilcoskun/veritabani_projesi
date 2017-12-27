@@ -144,7 +144,7 @@ odeme_tar date Not Null,
 taksit_fiyat money Not Null,
 taksit_durum varchar(10) Not Null
 	constraint ck_taksit_durum
-	check(taksit_durum in ('�dendi','�denmedi')),
+	check(taksit_durum in ('Ödendi','Ödenmedi')),
 )
 
 CREATE TABLE silinen_ogrenci
