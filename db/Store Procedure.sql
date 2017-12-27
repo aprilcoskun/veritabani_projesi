@@ -113,26 +113,50 @@ Create Proc sp_gecmis_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)>datepart(month,getdate()) for json auto
+	where datepart(month,odeme_tar)>datepart(month,getdate())
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_gelecek_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)<datepart(month,getdate()) for json auto
+	where datepart(month,odeme_tar)<datepart(month,getdate())
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_odenmemis_taksit
 As
 	Select * From taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi' for json auto
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödenmedi'
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
 
 Create Proc sp_odenmis_taksit
 	As
 	Select * From  taksit inner join ogrenci
 	on ogrenci.ogr_tc=taksit.ogr_tc
-	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi' for json auto
+	where datepart(month,odeme_tar)=datepart(month,getdate()) and taksit_durum='Ödendi'
+	ORDER BY odeme_tar ASC,ogr_ad ASC
+	for json auto
 Go
+
+Create Proc sp_taksit_toplam
+@yil smallint
+As
+Select Month(odeme_tar) AS ay,sum(taksit_fiyat) AS toplam
+From taksit
+where Year(odeme_tar)=@yil and taksit_durum='Ödendi' Group By MONTH(odeme_tar) for json auto
+
+
+Create PROC sp_yedekle
+AS
+DECLARE @Dosya varchar(200)
+SELECT @Dosya =N'/var/opt/mssql/data/anaokulu-' + REPLACE(convert(nvarchar(20),GetDate(),120),':','-') + '.bak'
+BACKUP  DATABASE  anaokulu
+TO DISK = @Dosya
+WITH NOFORMAT, NOINIT, NAME = 'anaokulu-full', SKIP, NOREWIND, NOUNLOAD
