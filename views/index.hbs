@@ -3,13 +3,13 @@
   <nav class="navbar navbar-default" id="navbar-root">
         <ul class="nav navbar-nav" id="nav-list">
           <li><a data-toggle="tab" href="#students">Öğrenciler</a></li>
+          <li><a data-toggle="tab" href="#schoolbus">Servis</a></li>
+          <li><a data-toggle="tab" href="#inventory">Envanter</a></li>
           {{#if Admin}}
           <li><a data-toggle="tab" href="#staff">Personeller</a></li>
           <li><a data-toggle="tab" href="#users">Kullanıcılar</a></li>
-          {{/if}}
-          <li><a data-toggle="tab" href="#schoolbus">Servis</a></li>
-          <li><a data-toggle="tab" href="#inventory">Envanter</a></li>
           <li><a data-toggle="tab" href="#budget">Bütçe</a></li>
+          {{/if}}
           <li>
             <a data-toggle="tab" href="#settings"><i class="fa fa-gear"></i></a>
           </li>
@@ -72,6 +72,7 @@
       </div>
     </div>
     <!--Bütçe-->
+    {{#if Admin}}
     <div id="budget" class="tab-pane fade col-sm-12">
       <div class="chart-container" style="height:500px; width:860px;margin: 0px auto;">
         <canvas id="chart"></canvas>
@@ -84,9 +85,8 @@
           <a class="btn btn-primary" href="javascript:listNextPays()">Gelecek Taksitleri Listele</a>
         </div>
       </div>
-
     </div>
-
+    {{/if}}
     <!--Ayarlar-->
     <div id="settings" class="tab-pane fade col-sm-12">
       <div class="form-group" style="margin-top:12px;">

@@ -4,6 +4,7 @@ const sql = require('mssql');
 
 /*FONKSIYONLAR*/
 const login = require('./functions/login');
+const pay = require('./functions/pay');
 
 const addBus = require('./functions/addBus');
 const addStaff = require('./functions/addStaff');
@@ -208,6 +209,12 @@ router.get('/newpays', (req, res) => {
 router.get('/nextpays', (req, res) => {
   listNextPays.attempt()
   .then(data => res.status(200).json(data))
+  .catch(err => console.error(err));
+});
+
+router.patch('/pay/:tc/:date', (req, res) => {
+  pay.attempt(req.params.tc, req.params.date)
+  .then(data => res.status(data.status).send())
   .catch(err => console.error(err));
 });
 
