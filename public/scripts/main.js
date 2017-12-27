@@ -508,6 +508,30 @@ function listSchoolBuses() {
       ${busTableContent}
     </table>
     `;
+    schoolBus.innerHTML += `
+    <div class="dropdown">
+      <button
+        class="btn btn-default dropdown-toggle"
+        type="button"
+        id="export"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="true">
+        Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="export">
+        <li>
+          <a
+            download="Servisler.json"
+            href='data:text/json;charset=utf-8,${JSON.stringify(busesCache)}'>
+              JSON
+          </a>
+        </li>
+        <li><a href="javascript:busesToPDF()">PDF</a></li>
+        <li><a href="#"></a></li>
+      </ul>
+    </div>`;
     if(!first) {
       $("#busesTable").css('opacity', '1');
       $('#busesTable').animateCss('flipInX');
@@ -708,6 +732,30 @@ function listUsers() {
       </thead>
       ${usersTableContent}
     </table>`;
+    _users.innerHTML += `
+    <div class="dropdown">
+      <button
+        class="btn btn-default dropdown-toggle"
+        type="button"
+        id="export"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="true">
+        Export
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="export">
+        <li>
+          <a
+            download="Kullanıcılar.json"
+            href='data:text/json;charset=utf-8,${JSON.stringify(usersCache)}'>
+              JSON
+          </a>
+        </li>
+        <li><a href="javascript:usersToPDF()">PDF</a></li>
+        <li><a href="#"></a></li>
+      </ul>
+    </div>`;
 
     if(!first) {
       $("#usersTable").css('opacity', '1');
@@ -1148,6 +1196,34 @@ function studentsToPDF() {
       }
     );
     students.style.fontFamily = '';
+}
+
+function usersToPDF() {
+    let users = document.getElementById('usersTable');
+    users.style.fontFamily = 'Helvetica,Arial,sans-serif';
+    html2pdf(
+      users,
+      {
+        margin:4,
+        filename:`Kullanıcılar.pdf`,
+        html2canvas:{ dpi: 192 },
+      }
+    );
+    users.style.fontFamily = '';
+}
+
+function busesToPDF() {
+    let buses = document.getElementById('busesTable');
+    buses.style.fontFamily = 'Helvetica,Arial,sans-serif';
+    html2pdf(
+      buses,
+      {
+        margin:4,
+        filename:`Servisler.pdf`,
+        html2canvas:{ dpi: 192 },
+      }
+    );
+    buses.style.fontFamily = '';
 }
 
 /*Cikis Yapma*/
