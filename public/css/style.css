@@ -9,7 +9,7 @@ body {
   background-image: url("/logo.jpg");
   background-repeat: no-repeat;
   background-attachment: fixed;
-  background-position: right top;
+  background-position: left top;
 }
 @media only screen and (max-width: 1555px)   {
   body {

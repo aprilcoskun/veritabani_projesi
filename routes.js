@@ -37,6 +37,11 @@ router.get('/', async (req, res) => {
     let paySum = 0;
     const mainPageData = await sql.query`exec sp_anasayfa`;
     const _data = await sql.query`exec sp_taksit_toplam`;
+    const _inventoryData = await sql.query`
+      Select Month(urun_kayit_tar) AS ay,sum(toplam_fiyat) AS toplam From envanter
+      where Year(urun_kayit_tar)=Year(getdate())
+      Group By MONTH(urun_kayit_tar) for json auto
+    `;
 
     mainPageData.recordsets[1][0].forEach(per => {
       paySum += per.per_maas;
@@ -49,6 +54,7 @@ router.get('/', async (req, res) => {
       SchoolBuses:mainPageData.recordsets[2][0],
       StaffSum: paySum,
       _sum:_data.recordsets[0][0],
+      _inventoryData:_inventoryData.recordsets[0],
       helpers: {
               ifEquals: function(arg1, arg2, options) {
                   return (arg1 == arg2) ? options.fn(this) : options.inverse(this);

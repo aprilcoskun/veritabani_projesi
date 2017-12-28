@@ -1302,7 +1302,7 @@ let myChart = new Chart(ctx, {
     },
     {
         label: '# Gelirler',
-        data: [55000,65000,76000,64000,59000,44000,37000,45000,58000,62000,64000,69000],
+        data: [0,0,0,0,0,0,0,0,0,0,0,0],
         backgroundColor: 'rgba(67,160,71,.5)',
         borderColor: 'rgba(67,160,71,.5)',
         fill:false
@@ -1316,6 +1316,8 @@ let myChart = new Chart(ctx, {
     }
   }
 });
+
+
 
 function importBus() {
   let file    = document.querySelector('input[type=file]').files[0];
@@ -1351,3 +1353,11 @@ function importBus() {
         .catch(err => console.error(err))
     }
 }
+
+_inventoryData[0].forEach(e => {
+  myChart.config.data.datasets[0].data[e.ay-1] += e.toplam;
+});
+
+_paymentHistory.forEach(e => {
+  myChart.config.data.datasets[1].data[e.ay-1] += e.toplam;
+})
