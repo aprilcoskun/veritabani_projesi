@@ -1,9 +1,3 @@
-<script type="text/javascript">
-staffCache =  JSON.parse($('<br/>').html(`{{json Staffs}}`).text());
-_sum = {{StaffSum}}/3;
-_paymentHistory = JSON.parse($('<br/>').html(`{{json _sum}}`).text());
-_inventoryData = JSON.parse($('<br/>').html(`{{json _inventoryData}}`).text());
-</script>
 <div class="container">
   <!--ANAMENU-->
   <nav class="navbar navbar-default" id="navbar-root">
@@ -536,4 +530,10 @@ _inventoryData = JSON.parse($('<br/>').html(`{{json _inventoryData}}`).text());
     </div>
   </div>
 </div>
+<script type="text/javascript">
+staffCache =  JSON.parse($('<br/>').html(`{{json Staffs}}`).text());
+_sum = {{StaffSum}}/4;
+_paymentHistory = JSON.parse($('<br/>').html(`{{json _sum}}`).text());
+_inventoryData = JSON.parse($('<br/>').html(`{{json _inventoryData}}`).text());
+</script>
 <script src="/scripts/main.js"></script>
