@@ -96,16 +96,19 @@ Create Proc sp_odenmis_taksit
 Go
 
 Create Proc sp_taksit_toplam
-@yil smallint
 As
 Select Month(odeme_tar) AS ay,sum(taksit_fiyat) AS toplam
 	From taksit
-	where Year(odeme_tar)=@yil and taksit_durum='Ödendi' Group By MONTH(odeme_tar) for json auto
+	where Year(odeme_tar)=Year(Getdate()) and taksit_durum='Ödendi' Group By MONTH(odeme_tar) for json auto
 Go
 
 Create Proc sp_yedekten_geri_yukle
-AS
-	RESTORE DATABASE [anaokulu]
-	FROM  DISK = N'/home/alp/anaokulu_yedek.bak'
-	WITH  FILE = 1, REPLACE
-GO
+  AS
+   ALTER DATABASE anaokulu
+   SET SINGLE_USER
+   WITH ROLLBACK IMMEDIATE
+
+  	RESTORE DATABASE [anaokulu]
+  	FROM  DISK = N'/home/alp/anaokulu_yedek.bak'
+  	WITH  FILE = 1, REPLACE
+  GO
