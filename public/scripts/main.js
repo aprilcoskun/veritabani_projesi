@@ -951,6 +951,7 @@ function listOldPays() {
   let paysTableContent = ``;
   fetch(`/oldpays`,{credentials: 'include'})
   .then(response => response.json()).then(pays => {
+    paysCache = pays;
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
@@ -1004,6 +1005,7 @@ function listPays() {
   let paysTableContent = ``;
   fetch(`/newpays`,{credentials: 'include'})
   .then(response => response.json()).then(pays => {
+    paysCache = pays;
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
@@ -1057,6 +1059,7 @@ function listPaid() {
   let paysTableContent = ``;
   fetch(`/newpaid`,{credentials: 'include'})
   .then(response => response.json()).then(pays => {
+    paysCache = pays;
     for (let i in pays) {
       let pay = pays[i];
         paysTableContent += `
@@ -1347,5 +1350,4 @@ function importBus() {
         })
         .catch(err => console.error(err))
     }
-  console.log(FileReader.result);
 }
